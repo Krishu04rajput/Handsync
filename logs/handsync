@@ -1,0 +1,62 @@
+2026-10-02 13:25:26,961 | INFO    | handsync | === HANDSYNC starting ===
+2026-10-02 13:25:27,020 | INFO    | handsync | Python 3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)] | Windows-11-10.0.26200-SP0
+2026-10-02 13:25:29,038 | INFO    | handsync.calibration | Calibration loaded from C:\Users\sande\OneDrive\Desktop\hads\HANDSYNC\config\calibration.json
+2026-10-02 13:25:29,885 | INFO    | handsync.ui | UI message [info]: Ready. Start the camera first. Robot is DISABLED until you press ENABLE ROBOT.
+2026-10-02 13:27:25,491 | INFO    | handsync.ui | Starting camera 0
+2026-10-02 13:27:28,581 | INFO    | handsync.hand_tracker | MediaPipe HandLandmarker initialised (mediapipe 1.0.1)
+2026-10-02 13:27:37,249 | INFO    | handsync.camera | Camera 0 opened (backend 1400, 640x480)
+2026-10-02 13:30:00,904 | INFO    | handsync.ui | UI message [info]: Moving to HOME position...
+2026-10-02 13:30:02,074 | INFO    | handsync.ui | UI message [ok]: HOME reached. Tracking resumes.
+2026-10-02 13:30:02,610 | INFO    | handsync.ui | UI message [info]: Demo running. (Robot only moves if ENABLED.)
+2026-10-02 13:30:07,022 | INFO    | handsync.ui | UI message [info]: Moving to HOME position...
+2026-10-02 13:30:07,054 | INFO    | handsync.ui | UI message [ok]: HOME reached. Tracking resumes.
+2026-10-02 13:30:15,086 | INFO    | handsync.ui | UI message [info]: Mode: MANUAL
+2026-10-02 13:30:16,796 | INFO    | handsync.ui | UI message [info]: Mode: MIRROR
+2026-10-02 13:39:19,699 | INFO    | handsync.ui | Starting camera 0
+2026-10-02 13:39:19,742 | INFO    | handsync.hand_tracker | MediaPipe HandLandmarker initialised (mediapipe 1.0.1)
+2026-10-02 13:39:25,745 | INFO    | handsync.ui | UI message [info]: Mode: MANUAL
+2026-10-02 13:39:26,955 | INFO    | handsync.ui | UI message [info]: Mode: MIRROR
+2026-10-02 13:40:20,055 | WARNING | handsync.ui | EMERGENCY STOP (from_esp32=False)
+2026-10-02 13:40:20,056 | INFO    | handsync.ui | UI message [err]: EMERGENCY STOP ACTIVE. Fix the problem, then press RESUME.
+2026-10-02 13:40:24,155 | INFO    | handsync.ui | UI message [warn]: Emergency stop cleared, but the ESP32 is not connected.
+2026-10-02 13:40:24,155 | INFO    | handsync.ui | Emergency stop cleared by user
+2026-10-02 13:41:27,302 | INFO    | handsync.calibration | Calibration saved to C:\Users\sande\OneDrive\Desktop\hads\HANDSYNC\config\calibration.json
+2026-10-02 13:41:27,306 | INFO    | handsync.calibration | Calibration saved to C:\Users\sande\OneDrive\Desktop\hads\HANDSYNC\config\calibration.json
+2026-10-02 13:41:54,105 | INFO    | handsync.ui | UI message [warn]: TEST right_elbow: target 90°  (robot not enabled: nothing will move)
+2026-10-02 13:41:55,125 | INFO    | handsync.ui | UI message [warn]: TEST right_elbow: target 90°  (robot not enabled: nothing will move)
+2026-10-02 13:41:55,872 | INFO    | handsync.ui | UI message [warn]: TEST right_elbow: target 45°  (robot not enabled: nothing will move)
+2026-10-02 13:41:56,353 | INFO    | handsync.ui | UI message [warn]: TEST right_elbow: target 90°  (robot not enabled: nothing will move)
+2026-10-02 13:42:06,293 | INFO    | handsync.ui | UI message [warn]: TEST left_gripper: target 90°  (robot not enabled: nothing will move)
+2026-10-02 13:42:21,004 | INFO    | handsync.ui | HANDSYNC closed
+2026-10-02 13:42:25,016 | INFO    | handsync.ui | HANDSYNC closed
+2026-10-02 13:42:29,017 | INFO    | handsync.ui | HANDSYNC closed
+2026-10-02 13:43:26,584 | INFO    | handsync | === HANDSYNC starting ===
+2026-10-02 13:43:26,645 | INFO    | handsync | Python 3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)] | Windows-11-10.0.26200-SP0
+2026-10-02 13:43:27,080 | INFO    | handsync.calibration | Calibration loaded from C:\Users\sande\OneDrive\Desktop\hads\HANDSYNC\config\calibration.json
+2026-10-02 13:43:27,417 | INFO    | handsync.ui | UI message [info]: Ready. Start the camera first. Robot is DISABLED until you press ENABLE ROBOT.
+2026-10-02 13:43:30,311 | INFO    | handsync.ui | Starting camera 0
+2026-10-02 13:43:31,569 | INFO    | handsync.hand_tracker | MediaPipe HandLandmarker initialised (mediapipe 1.0.1)
+2026-10-02 13:43:42,787 | INFO    | handsync.camera | Camera 0 opened (backend 700, 640x480)
+2026-10-02 13:48:46,349 | INFO    | handsync.ui | HANDSYNC closed
+2026-10-02 15:17:40,616 | INFO    | handsync | === HANDSYNC starting ===
+2026-10-02 15:17:40,721 | INFO    | handsync | Python 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)] | Windows-11-10.0.26200-SP0
+2026-10-02 15:17:43,067 | INFO    | handsync.calibration | Calibration loaded from C:\Users\sande\OneDrive\Desktop\hads\HANDSYNC\config\calibration.json
+2026-10-02 15:17:43,846 | INFO    | handsync.ui | UI message [info]: Ready. Start the camera first. Robot is DISABLED until you press ENABLE ROBOT.
+2026-10-02 15:17:59,478 | INFO    | handsync.ui | Starting camera 0
+2026-10-02 15:18:01,366 | INFO    | handsync.hand_tracker | MediaPipe HandLandmarker initialised (mediapipe 0.10.21)
+2026-10-02 15:19:51,937 | INFO    | handsync.ui | HANDSYNC closed
+2026-10-02 15:19:55,948 | INFO    | handsync.ui | HANDSYNC closed
+2026-10-02 15:20:13,837 | INFO    | handsync | === HANDSYNC starting ===
+2026-10-02 15:20:13,901 | INFO    | handsync | Python 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)] | Windows-11-10.0.26200-SP0
+2026-10-02 15:20:14,282 | INFO    | handsync.calibration | Calibration loaded from C:\Users\sande\OneDrive\Desktop\hads\HANDSYNC\config\calibration.json
+2026-10-02 15:20:14,603 | INFO    | handsync.ui | UI message [info]: Ready. Start the camera first. Robot is DISABLED until you press ENABLE ROBOT.
+2026-10-02 15:20:18,421 | INFO    | handsync.ui | Starting camera 0
+2026-10-02 15:20:19,574 | INFO    | handsync.hand_tracker | MediaPipe HandLandmarker initialised (mediapipe 0.10.21)
+2026-10-02 15:24:28,744 | INFO    | handsync | === HANDSYNC starting ===
+2026-10-02 15:24:28,818 | INFO    | handsync | Python 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)] | Windows-11-10.0.26200-SP0
+2026-10-02 15:24:29,461 | INFO    | handsync.calibration | Calibration loaded from C:\Users\sande\OneDrive\Desktop\hads\HANDSYNC\config\calibration.json
+2026-10-02 15:24:30,106 | INFO    | handsync.ui | UI message [info]: Ready. Start the camera first. Robot is DISABLED until you press ENABLE ROBOT.
+2026-10-02 15:24:43,515 | INFO    | handsync.ui | Starting camera 0
+2026-10-02 15:24:44,789 | INFO    | handsync.hand_tracker | MediaPipe HandLandmarker initialised (mediapipe 0.10.21)
+2026-10-02 15:24:56,652 | INFO    | handsync.camera | Camera 0 opened (backend 1400, 640x480)
+2026-10-02 15:29:55,851 | INFO    | handsync.ui | HANDSYNC closed

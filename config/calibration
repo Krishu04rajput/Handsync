@@ -1,0 +1,57 @@
+{
+    "left_base": {
+        "min": 20,
+        "max": 160,
+        "center": 90,
+        "invert": false
+    },
+    "left_shoulder": {
+        "min": 25,
+        "max": 150,
+        "center": 90,
+        "invert": false
+    },
+    "left_elbow": {
+        "min": 25,
+        "max": 150,
+        "center": 90,
+        "invert": false
+    },
+    "left_gripper": {
+        "min": 25,
+        "max": 100,
+        "center": 90,
+        "invert": false,
+        "open": 90,
+        "closed": 30
+    },
+    "right_base": {
+        "min": 20,
+        "max": 160,
+        "center": 90,
+        "invert": false
+    },
+    "right_shoulder": {
+        "min": 25,
+        "max": 150,
+        "center": 90,
+        "invert": false
+    },
+    "right_elbow": {
+        "min": 25,
+        "max": 150,
+        "center": 90,
+        "invert": false
+    },
+    "right_gripper": {
+        "min": 25,
+        "max": 100,
+        "center": 90,
+        "invert": false,
+        "open": 90,
+        "closed": 30
+    },
+    "settings": {
+        "swap_left_right": false
+    }
+}

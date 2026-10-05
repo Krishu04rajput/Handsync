@@ -1,0 +1,10 @@
+from app.demo import DEMO_STEPS, DemoSequencer
+
+
+def test_demo_runs_through_and_finishes():
+    d = DemoSequencer()
+    d.start(100.0)
+    assert d.update(100.1).mode == "home" and d.active
+    total = sum(s[2] for s in DEMO_STEPS)
+    assert d.update(100.0 + total + 1).mode == "done"
+    assert not d.active

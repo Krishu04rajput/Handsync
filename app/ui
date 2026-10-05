@@ -1,0 +1,871 @@
+"""HANDSYNC PySide6 dashboard (runs on the GUI thread; vision runs in CameraWorker)."""
+from __future__ import annotations
+
+import time
+from typing import Optional
+
+from PySide6.QtCore import Qt, QTimer
+from PySide6.QtGui import QKeySequence, QPixmap, QShortcut
+from PySide6.QtWidgets import (QButtonGroup, QCheckBox, QComboBox, QDialog, QFrame, QGridLayout,
+                               QHBoxLayout, QLabel, QMainWindow, QMessageBox, QPushButton,
+                               QScrollArea, QSizePolicy, QSlider, QSpinBox, QVBoxLayout, QWidget,
+                               QApplication)
+
+import config
+from app.calibration import Calibration, CalibrationError, save_calibration
+from app.camera import CameraWorker, FrameResult
+from app.demo import DemoSequencer
+from app.hand_tracker import HandTrackerError, download_model, model_status
+from app.logger import get_logger
+from app.mapping import RobotMapper
+from app.serial_controller import SerialController, parse_status
+from app.smoothing import ServoSmoother
+
+log = get_logger(__name__)
+
+# robot states
+DISABLED, ENABLED, ESTOP = "DISABLED", "ENABLED", "ESTOP"
+
+QSS = """
+QMainWindow, QWidget#root { background:#0b0f17; }
+QWidget { color:#d6e2f0; font-family:'Segoe UI','Inter',sans-serif; font-size:12px; }
+QFrame#card { background:#121926; border:1px solid #1f2b3d; border-radius:10px; }
+QLabel#cardTitle { color:#4cc9f0; font-weight:700; letter-spacing:2px; font-size:11px; }
+QLabel#appTitle { font-size:28px; font-weight:800; color:#e8f4ff; letter-spacing:7px; }
+QLabel#appSubtitle { color:#4cc9f0; letter-spacing:3px; font-size:11px; }
+QLabel#video { background:#05080d; border:1px solid #1f2b3d; border-radius:10px; }
+QLabel#banner { font-size:16px; font-weight:800; letter-spacing:2px; padding:8px; border-radius:8px; }
+QLabel#banner[level="info"] { background:#0e3a4a; color:#aef0ff; border:1px solid #4cc9f0; }
+QLabel#banner[level="err"] { background:#5c0f1c; color:#ffd5dc; border:2px solid #ff4d6a; }
+QLabel#badge { padding:3px 10px; border-radius:10px; font-weight:700; border:1px solid #3a4a60;
+               background:#182233; color:#9fb3c8; }
+QLabel#badge[level="ok"]   { background:#0f3d2e; color:#46e8ab; border-color:#46e8ab; }
+QLabel#badge[level="warn"] { background:#443300; color:#ffd24a; border-color:#ffd24a; }
+QLabel#badge[level="err"]  { background:#4a0f1b; color:#ff7a90; border-color:#ff7a90; }
+QLabel#badge[level="info"] { background:#0e3a4a; color:#7fdcff; border-color:#4cc9f0; }
+QLabel#msg { color:#9fb3c8; }
+QPushButton { background:#182233; border:1px solid #2b3b52; border-radius:6px; padding:7px 10px; font-weight:600; }
+QPushButton:hover { border-color:#4cc9f0; }
+QPushButton:disabled { color:#5b6b7f; background:#10161f; border-color:#1b2535; }
+QPushButton:checked { background:#0e3a4a; border-color:#4cc9f0; color:#aef0ff; }
+QPushButton#primary { background:#0d6e86; border-color:#4cc9f0; color:white; }
+QPushButton#estop { background:#b3122a; border:2px solid #ff4d6a; color:white; font-size:15px;
+                    font-weight:800; padding:14px; letter-spacing:2px; }
+QPushButton#estop:hover { background:#d4163a; }
+QPushButton#resume { background:#b36b00; border:2px solid #ffd24a; color:white; font-weight:800; padding:10px; }
+QComboBox, QSpinBox { background:#0e1520; border:1px solid #2b3b52; border-radius:6px; padding:4px 8px; }
+QComboBox QAbstractItemView { background:#0e1520; selection-background-color:#0d6e86; }
+QSlider::groove:horizontal { height:6px; background:#1f2b3d; border-radius:3px; }
+QSlider::sub-page:horizontal { background:#4cc9f0; border-radius:3px; }
+QSlider::handle:horizontal { background:#e8f4ff; width:14px; margin:-5px 0; border-radius:7px; }
+QSlider::handle:horizontal:disabled { background:#4b5a6e; }
+QScrollArea { border:none; background:transparent; }
+QCheckBox { spacing:8px; }
+"""
+
+
+def set_badge(label: QLabel, text: str, level: str) -> None:
+    """Coloured status pill. The text always says the status too (not colour alone)."""
+    icon = {"ok": "\u25CF", "warn": "\u25B2", "err": "\u25A0", "info": "\u25CF", "off": "\u25CB"}.get(level, "")
+    label.setText(f"{icon} {text}")
+    label.setProperty("level", level)
+    label.style().unpolish(label)
+    label.style().polish(label)
+
+
+def make_card(title: str) -> tuple[QFrame, QVBoxLayout]:
+    frame = QFrame()
+    frame.setObjectName("card")
+    layout = QVBoxLayout(frame)
+    layout.setContentsMargins(14, 12, 14, 12)
+    layout.setSpacing(8)
+    heading = QLabel(title)
+    heading.setObjectName("cardTitle")
+    layout.addWidget(heading)
+    return frame, layout
+
+
+def make_badge(text: str = "", level: str = "off") -> QLabel:
+    badge = QLabel()
+    badge.setObjectName("badge")
+    set_badge(badge, text, level)
+    return badge
+
+
+# ====================================================================== calibration dialog
+class CalibrationDialog(QDialog):
+    """Edit min / center / max / invert / gripper open+closed for all 8 servos."""
+
+    def __init__(self, calibration: Calibration, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("HANDSYNC - Servo calibration")
+        self.setStyleSheet(QSS)
+        self.result_calibration: Optional[Calibration] = None
+        self._original = calibration
+        layout = QVBoxLayout(self)
+        note = QLabel("Angles are in degrees (0-180). The robot will NEVER move outside Min..Max.\n"
+                      "Open/Closed apply to grippers only. 'Invert' mirrors a joint around its Center.")
+        note.setObjectName("msg")
+        layout.addWidget(note)
+        grid = QGridLayout()
+        for col, head in enumerate(("Servo", "Min", "Center", "Max", "Invert", "Open", "Closed")):
+            label = QLabel(head)
+            label.setObjectName("cardTitle")
+            grid.addWidget(label, 0, col)
+        self.fields: dict[str, dict] = {}
+        for row, name in enumerate(config.SERVO_NAMES, start=1):
+            cal = calibration.servos[name]
+            grid.addWidget(QLabel(name.replace("_", " ").upper()), row, 0)
+            widgets: dict = {}
+            for col, key in enumerate(("min", "center", "max"), start=1):
+                spin = QSpinBox()
+                spin.setRange(0, 180)
+                spin.setValue(getattr(cal, key))
+                grid.addWidget(spin, row, col)
+                widgets[key] = spin
+            invert = QCheckBox()
+            invert.setChecked(cal.invert)
+            grid.addWidget(invert, row, 4)
+            widgets["invert"] = invert
+            if name.endswith("gripper"):
+                for col, key in enumerate(("open", "closed"), start=5):
+                    spin = QSpinBox()
+                    spin.setRange(0, 180)
+                    spin.setValue(getattr(cal, key) or 0)
+                    grid.addWidget(spin, row, col)
+                    widgets[key] = spin
+            self.fields[name] = widgets
+        layout.addLayout(grid)
+        buttons = QHBoxLayout()
+        save = QPushButton("SAVE")
+        save.setObjectName("primary")
+        cancel = QPushButton("CANCEL")
+        defaults = QPushButton("RESET TO DEFAULTS")
+        save.clicked.connect(self._on_save)
+        cancel.clicked.connect(self.reject)
+        defaults.clicked.connect(self._on_defaults)
+        buttons.addWidget(defaults)
+        buttons.addStretch(1)
+        buttons.addWidget(cancel)
+        buttons.addWidget(save)
+        layout.addLayout(buttons)
+
+    def _on_defaults(self) -> None:
+        default = Calibration.default()
+        for name, widgets in self.fields.items():
+            cal = default.servos[name]
+            for key, widget in widgets.items():
+                value = getattr(cal, key)
+                if isinstance(widget, QCheckBox):
+                    widget.setChecked(bool(value))
+                else:
+                    widget.setValue(value or 0)
+
+    def _on_save(self) -> None:
+        data: dict = self._original.to_dict()
+        for name, widgets in self.fields.items():
+            entry = {"invert": widgets["invert"].isChecked()}
+            for key in ("min", "center", "max", "open", "closed"):
+                if key in widgets:
+                    entry[key] = widgets[key].value()
+            data[name] = entry
+        try:
+            self.result_calibration = Calibration.from_dict(data)
+        except CalibrationError as exc:
+            QMessageBox.warning(self, "Invalid calibration", str(exc))
+            return
+        self.accept()
+
+
+# ====================================================================== main window
+class MainWindow(QMainWindow):
+    def __init__(self, calibration: Calibration, calibration_warnings: list[str]):
+        super().__init__()
+        self.setWindowTitle("HANDSYNC")
+        self.resize(1360, 820)
+        self.setStyleSheet(QSS)
+
+        self.cal = calibration
+        self.serial = SerialController()
+        self.mapper = RobotMapper(self.cal)
+        self.smoother = ServoSmoother(self.cal.home_outputs(), config.SMOOTHING_ALPHA,
+                                      config.MAX_STEP_PER_UPDATE, config.DEADBAND_DEG)
+        self.demo = DemoSequencer()
+        self.worker: Optional[CameraWorker] = None
+
+        self.state = DISABLED
+        self.control_mode = "MIRROR"           # MIRROR (hands drive robot) | MANUAL (sliders)
+        self.homing = False
+        self.manual_targets: list[int] = self.cal.home_outputs()
+        self._enabled_at = 0.0
+        self._ignore_slider = False
+        self._last_tracking_states = {"left": "LOST", "right": "LOST"}
+
+        self._build_ui()
+        self.refresh_ports()
+        self._apply_calibration_to_ui()
+        self._refresh_controls()
+        QShortcut(QKeySequence(Qt.Key_Escape), self, activated=self.emergency_stop)
+
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self._on_tick)
+        self.timer.start(int(1000 / config.CONTROL_RATE_HZ))
+
+        for warning in calibration_warnings:
+            self.say(warning, "warn")
+            QMessageBox.warning(self, "Calibration", warning)
+        self.say("Ready. Start the camera first. Robot is DISABLED until you press ENABLE ROBOT.", "info")
+
+    # ------------------------------------------------------------------ UI construction
+    def _build_ui(self) -> None:
+        root = QWidget()
+        root.setObjectName("root")
+        self.setCentralWidget(root)
+        outer = QHBoxLayout(root)
+        outer.setContentsMargins(16, 12, 16, 12)
+        outer.setSpacing(14)
+
+        # ---- left: header + banner + video
+        left = QVBoxLayout()
+        title = QLabel(config.APP_NAME)
+        title.setObjectName("appTitle")
+        subtitle = QLabel(config.APP_SUBTITLE)
+        subtitle.setObjectName("appSubtitle")
+        left.addWidget(title)
+        left.addWidget(subtitle)
+        self.banner = QLabel("")
+        self.banner.setObjectName("banner")
+        self.banner.setAlignment(Qt.AlignCenter)
+        self.banner.hide()
+        left.addWidget(self.banner)
+        self.video = QLabel("CAMERA OFF\nPress START CAMERA")
+        self.video.setObjectName("video")
+        self.video.setAlignment(Qt.AlignCenter)
+        self.video.setMinimumSize(640, 480)
+        self.video.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        left.addWidget(self.video, 1)
+        self.fps_label = QLabel("FPS --")
+        self.fps_label.setObjectName("msg")
+        left.addWidget(self.fps_label)
+        outer.addLayout(left, 1)
+
+        # ---- right: scrollable control panel
+        panel = QWidget()
+        col = QVBoxLayout(panel)
+        col.setContentsMargins(0, 0, 6, 0)
+        col.setSpacing(10)
+        for builder in (self._card_connection, self._card_camera, self._card_control,
+                        self._card_hands, self._card_servos, self._card_hw_test):
+            col.addWidget(builder())
+        self.message = QLabel("")
+        self.message.setObjectName("msg")
+        self.message.setWordWrap(True)
+        col.addWidget(self.message)
+        col.addStretch(1)
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setWidget(panel)
+        scroll.setFixedWidth(440)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        outer.addWidget(scroll)
+
+    def _card_connection(self) -> QFrame:
+        card, lay = make_card("ESP32 CONNECTION")
+        row = QHBoxLayout()
+        row.addWidget(QLabel("ESP32 STATUS:"))
+        self.serial_badge = make_badge("DISCONNECTED", "off")
+        row.addWidget(self.serial_badge)
+        row.addStretch(1)
+        lay.addLayout(row)
+        row = QHBoxLayout()
+        row.addWidget(QLabel("COM PORT:"))
+        self.port_combo = QComboBox()
+        self.port_combo.setMinimumWidth(220)
+        row.addWidget(self.port_combo, 1)
+        lay.addLayout(row)
+        row = QHBoxLayout()
+        self.refresh_btn = QPushButton("REFRESH PORTS")
+        self.connect_btn = QPushButton("CONNECT ESP32")
+        self.connect_btn.setObjectName("primary")
+        self.disconnect_btn = QPushButton("DISCONNECT")
+        self.refresh_btn.clicked.connect(self.refresh_ports)
+        self.connect_btn.clicked.connect(self.connect_esp32)
+        self.disconnect_btn.clicked.connect(self.disconnect_esp32)
+        for b in (self.refresh_btn, self.connect_btn, self.disconnect_btn):
+            row.addWidget(b)
+        lay.addLayout(row)
+        self.esp_state_label = QLabel(f"ESP32 firmware state: --   (baud {config.BAUD_RATE})")
+        self.esp_state_label.setObjectName("msg")
+        lay.addWidget(self.esp_state_label)
+        return card
+
+    def _card_camera(self) -> QFrame:
+        card, lay = make_card("CAMERA")
+        row = QHBoxLayout()
+        row.addWidget(QLabel("CAMERA:"))
+        self.camera_badge = make_badge("OFF", "off")
+        row.addWidget(self.camera_badge)
+        row.addStretch(1)
+        row.addWidget(QLabel("INDEX:"))
+        self.camera_combo = QComboBox()
+        for index in config.CAMERA_INDEX_CHOICES:
+            self.camera_combo.addItem(str(index), index)
+        self.camera_combo.setCurrentIndex(max(0, config.CAMERA_INDEX_CHOICES.index(config.CAMERA_INDEX)))
+        row.addWidget(self.camera_combo)
+        lay.addLayout(row)
+        row = QHBoxLayout()
+        self.start_cam_btn = QPushButton("START CAMERA")
+        self.start_cam_btn.setObjectName("primary")
+        self.stop_cam_btn = QPushButton("STOP CAMERA")
+        self.start_cam_btn.clicked.connect(self.start_camera)
+        self.stop_cam_btn.clicked.connect(self.stop_camera)
+        row.addWidget(self.start_cam_btn)
+        row.addWidget(self.stop_cam_btn)
+        lay.addLayout(row)
+        row = QHBoxLayout()
+        self.mirror_check = QCheckBox("MIRROR CAMERA")
+        self.mirror_check.setChecked(config.MIRROR_CAMERA_DEFAULT)
+        self.swap_check = QCheckBox("SWAP LEFT / RIGHT")
+        self.swap_check.setChecked(self.cal.swap_left_right)
+        self.mirror_check.toggled.connect(self._on_vision_flags)
+        self.swap_check.toggled.connect(self._on_swap_toggled)
+        row.addWidget(self.mirror_check)
+        row.addWidget(self.swap_check)
+        lay.addLayout(row)
+        return card
+
+    def _card_control(self) -> QFrame:
+        card, lay = make_card("ROBOT CONTROL")
+        row = QHBoxLayout()
+        row.addWidget(QLabel("STATE:"))
+        self.state_badge = make_badge("VISION ONLY", "info")
+        row.addWidget(self.state_badge)
+        row.addStretch(1)
+        lay.addLayout(row)
+        self.enable_btn = QPushButton("ENABLE ROBOT")
+        self.enable_btn.setObjectName("primary")
+        self.enable_btn.clicked.connect(self.toggle_enable)
+        lay.addWidget(self.enable_btn)
+
+        row = QHBoxLayout()
+        row.addWidget(QLabel("MODE:"))
+        self.mode_mirror_btn = QPushButton("MIRROR")
+        self.mode_manual_btn = QPushButton("MANUAL")
+        for b in (self.mode_mirror_btn, self.mode_manual_btn):
+            b.setCheckable(True)
+            row.addWidget(b)
+        self.mode_mirror_btn.setChecked(True)
+        group = QButtonGroup(self)
+        group.setExclusive(True)
+        group.addButton(self.mode_mirror_btn)
+        group.addButton(self.mode_manual_btn)
+        self.mode_mirror_btn.clicked.connect(lambda: self.set_mode("MIRROR"))
+        self.mode_manual_btn.clicked.connect(lambda: self.set_mode("MANUAL"))
+        lay.addLayout(row)
+
+        row = QHBoxLayout()
+        row.addWidget(QLabel("RESPONSE:"))
+        self.response_slider = QSlider(Qt.Horizontal)
+        self.response_slider.setRange(5, 60)
+        self.response_slider.setValue(int(config.SMOOTHING_ALPHA * 100))
+        self.response_slider.valueChanged.connect(lambda v: setattr(self.smoother, "alpha", v / 100.0))
+        row.addWidget(self.response_slider, 1)
+        row.addWidget(QLabel("smooth \u2194 fast"))
+        lay.addLayout(row)
+
+        row = QHBoxLayout()
+        self.home_btn = QPushButton("HOME ROBOT")
+        self.demo_btn = QPushButton("START DEMO")
+        self.calib_btn = QPushButton("CALIBRATION")
+        self.home_btn.clicked.connect(self.home_robot)
+        self.demo_btn.clicked.connect(self.toggle_demo)
+        self.calib_btn.clicked.connect(self.open_calibration)
+        for b in (self.home_btn, self.demo_btn, self.calib_btn):
+            row.addWidget(b)
+        lay.addLayout(row)
+
+        self.estop_btn = QPushButton("EMERGENCY STOP  (Esc)")
+        self.estop_btn.setObjectName("estop")
+        self.estop_btn.clicked.connect(self.emergency_stop)
+        lay.addWidget(self.estop_btn)
+        self.resume_btn = QPushButton("RESUME  (clear emergency stop)")
+        self.resume_btn.setObjectName("resume")
+        self.resume_btn.clicked.connect(self.resume_from_estop)
+        lay.addWidget(self.resume_btn)
+        return card
+
+    def _card_hands(self) -> QFrame:
+        card, lay = make_card("HAND STATUS")
+        self.hand_badges: dict[str, QLabel] = {}
+        for arm in config.ARMS:
+            row = QHBoxLayout()
+            row.addWidget(QLabel(f"{arm.upper()} HAND:"))
+            badge = make_badge("NOT DETECTED", "off")
+            self.hand_badges[arm] = badge
+            row.addStretch(1)
+            row.addWidget(badge)
+            lay.addLayout(row)
+        return card
+
+    def _card_servos(self) -> QFrame:
+        card, lay = make_card("SERVO MONITOR  (sliders active in MANUAL mode)")
+        self.sliders: dict[str, QSlider] = {}
+        self.value_labels: dict[str, QLabel] = {}
+        grid = QGridLayout()
+        row = 0
+        for arm in config.ARMS:
+            head = QLabel(f"{arm.upper()} ARM")
+            head.setObjectName("cardTitle")
+            grid.addWidget(head, row, 0, 1, 3)
+            row += 1
+            for joint in config.JOINTS:
+                name = f"{arm}_{joint}"
+                grid.addWidget(QLabel(f"{joint.capitalize()}:"), row, 0)
+                slider = QSlider(Qt.Horizontal)
+                slider.valueChanged.connect(lambda value, n=name: self._on_slider(n, value))
+                value_label = QLabel("90\u00B0")
+                value_label.setMinimumWidth(40)
+                grid.addWidget(slider, row, 1)
+                grid.addWidget(value_label, row, 2)
+                self.sliders[name], self.value_labels[name] = slider, value_label
+                row += 1
+        lay.addLayout(grid)
+        return card
+
+    def _card_hw_test(self) -> QFrame:
+        card, lay = make_card("HARDWARE TEST  (one servo at a time)")
+        row = QHBoxLayout()
+        row.addWidget(QLabel("SERVO:"))
+        self.test_combo = QComboBox()
+        for name in config.SERVO_NAMES:
+            self.test_combo.addItem(f"{name.replace('_', ' ').upper()}  (ch {config.SERVO_CHANNELS[name]})", name)
+        row.addWidget(self.test_combo, 1)
+        lay.addLayout(row)
+        row = QHBoxLayout()
+        for text, delta in (("-45\u00B0", -45), ("CENTER", 0), ("+45\u00B0", 45)):
+            b = QPushButton(text)
+            b.clicked.connect(lambda _=False, d=delta: self.hardware_test(d))
+            row.addWidget(b)
+        lay.addLayout(row)
+        note = QLabel("Moves relative to CENTER, always limited to the calibrated Min..Max.\n"
+                      "Needs: ESP32 connected + ENABLE ROBOT.")
+        note.setObjectName("msg")
+        lay.addWidget(note)
+        return card
+
+    # ------------------------------------------------------------------ helpers
+    def say(self, text: str, level: str = "info") -> None:
+        color = {"info": "#9fb3c8", "warn": "#ffd24a", "err": "#ff7a90", "ok": "#46e8ab"}.get(level, "#9fb3c8")
+        self.message.setStyleSheet(f"color:{color};")
+        self.message.setText(text)
+        log.info("UI message [%s]: %s", level, text)
+
+    def _apply_calibration_to_ui(self) -> None:
+        self._ignore_slider = True
+        for name, slider in self.sliders.items():
+            servo = self.cal.servos[name]
+            slider.setRange(servo.min, servo.max)
+            slider.setValue(self.cal.clamp(name, self.manual_targets[config.SERVO_CHANNELS[name]]))
+        self._ignore_slider = False
+        self.mapper.set_calibration(self.cal)
+        self.swap_check.blockSignals(True)
+        self.swap_check.setChecked(self.cal.swap_left_right)
+        self.swap_check.blockSignals(False)
+        if self.worker:
+            self.worker.swap = self.cal.swap_left_right
+
+    def _display_state(self) -> tuple[str, str]:
+        if self.state == ESTOP:
+            return "EMERGENCY STOP ACTIVE", "err"
+        if self.state == ENABLED:
+            return "ROBOT ENABLED", "ok"
+        if not self.serial.is_connected:
+            return "VISION ONLY", "info"
+        return "ROBOT DISABLED", "warn"
+
+    def _refresh_controls(self) -> None:
+        text, level = self._display_state()
+        set_badge(self.state_badge, text, level)
+        estop = self.state == ESTOP
+        self.enable_btn.setText("DISABLE ROBOT" if self.state == ENABLED else "ENABLE ROBOT")
+        self.enable_btn.setEnabled(not estop)
+        self.resume_btn.setVisible(estop)
+        self.home_btn.setEnabled(not estop)
+        manual = self.control_mode == "MANUAL"
+        for slider in self.sliders.values():
+            slider.setEnabled(manual and not estop)
+        self.demo_btn.setText("STOP DEMO" if self.demo.active else "START DEMO")
+        connected = self.serial.is_connected
+        self.connect_btn.setEnabled(not connected)
+        self.disconnect_btn.setEnabled(connected)
+        self.port_combo.setEnabled(not connected)
+        self.start_cam_btn.setEnabled(self.worker is None)
+        self.stop_cam_btn.setEnabled(self.worker is not None)
+        self.camera_combo.setEnabled(self.worker is None)
+        if estop:
+            self._set_banner("EMERGENCY STOP ACTIVE - press RESUME to continue", "err")
+        elif not self.demo.active:
+            self._set_banner("", "info")
+
+    def _set_banner(self, text: str, level: str) -> None:
+        self.banner.setVisible(bool(text))
+        if text and self.banner.text() != text:
+            self.banner.setText(text)
+        if self.banner.property("level") != level:      # re-polish only when the colour really changes
+            self.banner.setProperty("level", level)
+            self.banner.style().unpolish(self.banner)
+            self.banner.style().polish(self.banner)
+
+    # ------------------------------------------------------------------ ports / serial
+    def refresh_ports(self) -> None:
+        previous = self.port_combo.currentData()
+        self.port_combo.clear()
+        ports = SerialController.list_ports()
+        for device, description in ports:
+            self.port_combo.addItem(f"{device}  -  {description}", device)
+        if not ports:
+            self.port_combo.addItem("(no COM ports found)", "")
+        index = self.port_combo.findData(previous)
+        if index >= 0:
+            self.port_combo.setCurrentIndex(index)
+
+    def connect_esp32(self) -> None:
+        port = self.port_combo.currentData()
+        if self.serial.connect(port):
+            set_badge(self.serial_badge, f"CONNECTED ({port})", "ok")
+            self.say(f"Connected to {port}. Robot stays DISABLED until you press ENABLE ROBOT.", "ok")
+        else:
+            set_badge(self.serial_badge, "CONNECTION ERROR", "err")
+            self.say("ESP32: CONNECTION ERROR - " + self.serial.last_error, "err")
+        self._refresh_controls()
+
+    def disconnect_esp32(self) -> None:
+        if self.state == ENABLED:
+            self.serial.send_command("DISABLE")
+            self.state = DISABLED
+        self.serial.disconnect()
+        set_badge(self.serial_badge, "DISCONNECTED", "off")
+        self.esp_state_label.setText(f"ESP32 firmware state: --   (baud {config.BAUD_RATE})")
+        self._refresh_controls()
+
+    def _link_lost(self) -> None:
+        """Called when a serial read/write failed."""
+        set_badge(self.serial_badge, "CONNECTION ERROR", "err")
+        if self.state == ENABLED:
+            self.state = DISABLED
+        self.say("ESP32: CONNECTION ERROR - " + (self.serial.last_error or "link lost") +
+                 ". The ESP32 holds a safe position by itself. Re-connect, then ENABLE ROBOT.", "err")
+        self._refresh_controls()
+
+    def _handle_serial_rx(self, now: float) -> None:
+        was_connected = self.serial.is_connected
+        for line in self.serial.poll():
+            status = parse_status(line)
+            if status:
+                self.esp_state_label.setText(
+                    f"ESP32 firmware state: {status['state']}   (baud {config.BAUD_RATE})")
+                # A STATUS line sent just before RESUME/ENABLE was processed may still arrive: ignore for 1.5 s.
+                if (status["state"] == "ESTOP" and self.state != ESTOP
+                        and now - self._enabled_at > 1.5):
+                    self.emergency_stop(from_esp32=True)
+                elif (status["state"] == "DISABLED" and self.state == ENABLED
+                      and now - self._enabled_at > 1.5):
+                    self.state = DISABLED
+                    self.say("ESP32 restarted or disabled itself. Press ENABLE ROBOT again.", "warn")
+                    self._refresh_controls()
+            elif line.startswith(("ERR", "WARN")):
+                self.say(f"ESP32 says: {line}", "warn")
+        if was_connected and not self.serial.is_connected:
+            self._link_lost()
+
+    # ------------------------------------------------------------------ camera
+    def start_camera(self) -> None:
+        if self.worker is not None:
+            return
+        ok, message = model_status()
+        if not ok:
+            box = QMessageBox(self)
+            box.setIcon(QMessageBox.Critical)
+            box.setWindowTitle("HANDSYNC - model missing")
+            box.setText("Hand Landmarker model not found." if "not found" in message else "Hand Landmarker model invalid.")
+            box.setInformativeText(message)
+            download = box.addButton("Download now", QMessageBox.AcceptRole)
+            box.addButton("Cancel", QMessageBox.RejectRole)
+            box.exec()
+            if box.clickedButton() is not download:
+                return
+            QApplication.setOverrideCursor(Qt.WaitCursor)
+            try:
+                download_model()
+            except HandTrackerError as exc:
+                QApplication.restoreOverrideCursor()
+                QMessageBox.critical(self, "Download failed", str(exc))
+                return
+            QApplication.restoreOverrideCursor()
+            self.say("Model downloaded.", "ok")
+        index = self.camera_combo.currentData()
+        log.info("Starting camera %s", index)
+        self.worker = CameraWorker(index, self.mirror_check.isChecked(), self.swap_check.isChecked(), self)
+        self.worker.result_ready.connect(self._on_result)
+        self.worker.camera_status.connect(self._on_camera_status)
+        self.worker.fatal_error.connect(self._on_camera_error)
+        self.worker.finished.connect(self._on_worker_finished)
+        set_badge(self.camera_badge, "STARTING...", "warn")
+        self.worker.start()
+        self._refresh_controls()
+
+    def stop_camera(self) -> None:
+        worker = self.worker
+        if worker is None:
+            return
+        worker.stop()
+        worker.wait(4000)
+        self._on_worker_finished()
+
+    def _on_worker_finished(self) -> None:
+        if self.worker is not None and self.worker.isRunning():
+            return
+        self.worker = None
+        self.video.clear()
+        self.video.setText("CAMERA OFF\nPress START CAMERA")
+        self.fps_label.setText("FPS --")
+        if "ERROR" not in self.camera_badge.text():
+            set_badge(self.camera_badge, "OFF", "off")
+        for arm in config.ARMS:
+            set_badge(self.hand_badges[arm], "NOT DETECTED", "off")
+        self._refresh_controls()
+
+    def _on_camera_status(self, ok: bool, text: str) -> None:
+        set_badge(self.camera_badge, text, "ok" if ok else "err")
+
+    def _on_camera_error(self, message: str) -> None:
+        set_badge(self.camera_badge, "ERROR", "err")
+        self.say("CAMERA ERROR: " + message, "err")
+        QMessageBox.critical(self, "HANDSYNC - camera / tracking error", message)
+        if self.worker:
+            self.worker.stop()
+
+    def _on_vision_flags(self) -> None:
+        if self.worker:
+            self.worker.mirror = self.mirror_check.isChecked()
+
+    def _on_swap_toggled(self, checked: bool) -> None:
+        self.cal.swap_left_right = checked
+        if self.worker:
+            self.worker.swap = checked
+        try:
+            save_calibration(self.cal)
+        except OSError as exc:
+            self.say(f"Could not save calibration: {exc}", "warn")
+
+    def _on_result(self, result: FrameResult) -> None:
+        pixmap = QPixmap.fromImage(result.image).scaled(self.video.size(), Qt.KeepAspectRatio,
+                                                         Qt.SmoothTransformation)
+        self.video.setPixmap(pixmap)
+        self.fps_label.setText(f"FPS {result.fps:4.1f}   |   hands: {result.hands_detected}")
+        now = time.monotonic()
+        self.mapper.update(result.observations, now)
+        for arm in config.ARMS:
+            obs = result.observations.get(arm)
+            tracking = self.mapper.tracking_state(arm, now)
+            if obs:
+                level = "ok"
+                text = f"TRACKING \u00B7 {obs.gesture}" if obs.gesture != "NEUTRAL" else "TRACKING"
+            elif tracking == "UNCERTAIN":
+                level, text = "warn", "UNCERTAIN (holding pose)"
+            else:
+                level, text = "off", "NOT DETECTED"
+            set_badge(self.hand_badges[arm], text, level)
+
+    # ------------------------------------------------------------------ robot state
+    def toggle_enable(self) -> None:
+        if self.state == ESTOP:
+            return
+        if self.state == ENABLED:
+            self.serial.send_command("DISABLE")
+            self.state = DISABLED
+            self.say("Robot DISABLED. Servos hold their last position.", "warn")
+        else:
+            if not self.serial.is_connected:
+                QMessageBox.information(self, "ESP32 not connected",
+                                        "Connect the ESP32 first (or keep testing vision only).")
+                return
+            # Soft start: smoother restarts from HOME so the first commands are gentle.
+            self.smoother.reset(self.cal.home_outputs())
+            self.manual_targets = self.cal.home_outputs()
+            self._sync_sliders_to(self.manual_targets)
+            if not (self.serial.send_command("ENABLE")):
+                self._link_lost()
+                return
+            self.state = ENABLED
+            self._enabled_at = time.monotonic()
+            self.say("Robot ENABLED. Keep hands clear of the arms.", "ok")
+        self._refresh_controls()
+
+    def emergency_stop(self, from_esp32: bool = False) -> None:
+        log.warning("EMERGENCY STOP (from_esp32=%s)", from_esp32)
+        self.state = ESTOP
+        self.homing = False
+        self.demo.stop()
+        for _ in range(3):                      # repeat: cheap insurance against a lost byte
+            self.serial.send_command("STOP")
+        self.say("EMERGENCY STOP ACTIVE. Fix the problem, then press RESUME.", "err")
+        self._refresh_controls()
+
+    def resume_from_estop(self) -> None:
+        if self.state != ESTOP:
+            return
+        if not self.serial.is_connected:
+            self.state = DISABLED
+            self.say("Emergency stop cleared, but the ESP32 is not connected.", "warn")
+        elif self.serial.send_command("RESUME"):
+            self.state = ENABLED
+            self._enabled_at = time.monotonic()
+            self.say("Resumed. Robot ENABLED.", "ok")
+        else:
+            self._link_lost()
+            self.state = DISABLED
+        log.info("Emergency stop cleared by user")
+        self._refresh_controls()
+
+    def set_mode(self, mode: str) -> None:
+        self.control_mode = mode
+        if mode == "MANUAL":      # start from where the robot is: no jump
+            self.manual_targets = [int(round(v)) for v in self.smoother.values]
+            self._sync_sliders_to(self.manual_targets)
+        self.say(f"Mode: {mode}", "info")
+        self._refresh_controls()
+
+    def home_robot(self) -> None:
+        if self.state == ESTOP:
+            return
+        self.demo.stop()
+        self.homing = True
+        if self.state == ENABLED:
+            self.serial.send_command("HOME")
+        self.say("Moving to HOME position...", "info")
+        self._refresh_controls()
+
+    def toggle_demo(self) -> None:
+        if self.demo.active:
+            self.demo.stop()
+            self.mapper.reset()
+            self.say("Demo stopped.", "info")
+        else:
+            if self.state == ESTOP:
+                return
+            if self.worker is None:
+                self.start_camera()
+            self.control_mode = "MIRROR"
+            self.mode_mirror_btn.setChecked(True)
+            self.homing = False
+            self.demo.start(time.monotonic())
+            self.say("Demo running. (Robot only moves if ENABLED.)", "info")
+        self._refresh_controls()
+
+    def hardware_test(self, delta: int) -> None:
+        if self.state == ESTOP:
+            return
+        name = self.test_combo.currentData()
+        servo = self.cal.servos[name]
+        target = self.cal.clamp(name, servo.center + delta)
+        self.control_mode = "MANUAL"
+        self.mode_manual_btn.setChecked(True)
+        if self.homing:
+            self.homing = False
+        self.manual_targets = [int(round(v)) for v in self.smoother.values]
+        self.manual_targets[config.SERVO_CHANNELS[name]] = target
+        self._sync_sliders_to(self.manual_targets)
+        suffix = "" if self.state == ENABLED else "  (robot not enabled: nothing will move)"
+        self.say(f"TEST {name}: target {target}\u00B0{suffix}", "info" if self.state == ENABLED else "warn")
+        self._refresh_controls()
+
+    def open_calibration(self) -> None:
+        dialog = CalibrationDialog(self.cal, self)
+        if dialog.exec() == QDialog.Accepted and dialog.result_calibration is not None:
+            new_cal = dialog.result_calibration
+            new_cal.swap_left_right = self.cal.swap_left_right
+            self.cal = new_cal
+            try:
+                save_calibration(self.cal)
+                self.say("Calibration saved.", "ok")
+            except OSError as exc:
+                self.say(f"Calibration applied but could not be saved: {exc}", "warn")
+            self.manual_targets = [self.cal.clamp(n, v) for n, v in zip(config.SERVO_NAMES, self.manual_targets)]
+            self._apply_calibration_to_ui()
+
+    # ------------------------------------------------------------------ sliders
+    def _sync_sliders_to(self, values: list) -> None:
+        self._ignore_slider = True
+        for name, slider in self.sliders.items():
+            slider.setValue(self.cal.clamp(name, values[config.SERVO_CHANNELS[name]]))
+        self._ignore_slider = False
+
+    def _on_slider(self, name: str, value: int) -> None:
+        if self._ignore_slider or self.control_mode != "MANUAL":
+            return
+        self.manual_targets[config.SERVO_CHANNELS[name]] = self.cal.clamp(name, value)
+
+    # ------------------------------------------------------------------ control loop (25 Hz)
+    def _compute_targets(self, now: float) -> list[int]:
+        home = self.cal.home_outputs()
+        if self.homing:
+            if self.smoother.max_error(home) < config.HOME_DONE_TOLERANCE_DEG:
+                self.homing = False
+                self.mapper.reset()             # resume tracking from the home pose, no jump back
+                self.manual_targets = list(home)
+                self._sync_sliders_to(home)
+                self.say("HOME reached. Tracking resumes.", "ok")
+                self._refresh_controls()
+            return home
+        if self.demo.active:
+            cmd = self.demo.update(now)
+            if cmd.mode == "done":
+                self.mapper.reset()
+                self.say("Demo finished.", "ok")
+                self._refresh_controls()
+                return self.mapper.targets()
+            self._set_banner(cmd.caption, "info")
+            if cmd.mode == "home":
+                return home
+            targets = self.mapper.targets()
+            if cmd.mode in ("gripper_open", "gripper_close"):
+                for arm in config.ARMS:
+                    targets[config.SERVO_CHANNELS[f"{arm}_gripper"]] = self.cal.gripper_angle(
+                        arm, cmd.mode == "gripper_open")
+            return targets
+        if self.control_mode == "MANUAL":
+            return [self.cal.clamp(n, v) for n, v in zip(config.SERVO_NAMES, self.manual_targets)]
+        return self.mapper.targets()
+
+    def _on_tick(self) -> None:
+        now = time.monotonic()
+        self._handle_serial_rx(now)
+        targets = self._compute_targets(now)
+        if self.state == ESTOP:
+            values = list(self.smoother.values)          # frozen
+        else:
+            values = self.smoother.step(targets)
+        outputs = [self.cal.clamp(name, v) for name, v in zip(config.SERVO_NAMES, values)]   # final safety clamp
+
+        for name, value in zip(config.SERVO_NAMES, outputs):
+            self.value_labels[name].setText(f"{value}\u00B0")
+        if self.control_mode != "MANUAL" or self.state == ESTOP:
+            self._sync_sliders_to(outputs)
+
+        if not self.serial.is_connected:
+            return
+        ok = self.serial.send_angles(outputs) if self.state == ENABLED else self.serial.send_command("PING")
+        if not ok:
+            self._link_lost()
+
+    # ------------------------------------------------------------------ shutdown
+    def closeEvent(self, event) -> None:  # noqa: N802 (Qt naming)
+        self.timer.stop()
+        self.demo.stop()
+        if self.serial.is_connected:
+            self.serial.send_command("DISABLE")
+        self.stop_camera()
+        self.serial.disconnect()
+        log.info("HANDSYNC closed")
+        super().closeEvent(event)

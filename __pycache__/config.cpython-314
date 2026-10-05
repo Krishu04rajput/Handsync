@@ -1,70 +1,0 @@
-+
-    kb¿jv  ã                  óÚ  € R t ^ RIHt ^ RIHt RtRt]! ] 4      P                  4       P                  t
-]
-R,
-          t
-]
-R,
-          tR t
-Rt]
-R	,
-          t]R
-,
-          t]
-R
-,
-          R,
-          t^ t. R&OtR
-tRt^t^-tRtRt^tRtRtRtRtRt^t Rt!R't"]#! ]"4      t$]%! ]"4       U Uu/ uF   w  rWbK	  	  upp t&R(t'R)t(RR*RR+RR+RR,/t)^Zt*^Zt+^t,Rt-Rt.Rt/Rt0R-t1R-t2Rt3Rt4Rt5R t6R!t7R"t8R#t9^t:R$t;R%# u upp i ).a   HANDSYNC central configuration.
-
-Edit values here instead of searching through the code.
-NOTE: servo limits / invert / open-close angles can also be changed from the
-CALIBRATION window; those are stored in config/calibration.json and override
-the defaults below.
-)Ú
-annotations)ÚPathÚHANDSYNCu/   COMPUTER VISION â†’ ESP32 â†’ DUAL ROBOTIC ARMSÚmodelszhand_landmarker.taskznhttps://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.taski@B Úlogszhandsync.logÚconfigzcalibration.jsoni€  ià  TFg      à?i Â gš™™™™™¹?iî  ÚbaseÚshoulderÚelbowÚ grippergš™™™™™É?g      @g333333ã?gÍÌÌÌÌÌÜ?g      D@g{®Gáz¤?gffffffæ?gÍÌÌÌÌÌô?gÍÌÌÌÌÌø?gffffffÖ?gš™™™™™á?g      ð?N)é    é   é   é   é   )Ú	left_baseÚ
-left_shoulderÚ
-left_elbowÚleft_gripperÚ
-right_baseÚright_shoulderÚ
-right_elbowÚ
-right_gripper)ÚleftÚright)r   r	   r
-   r
-   )é   é    )é   é–   )r   éd   )g333333Ã?g333333ë?)<Ú __doc__Ú
-__future__r   Ú pathlibr   ÚAPP_NAMEÚAPP_SUBTITLEÚ__file__Ú resolveÚparentÚBASE_DIRÚ
-MODELS_DIRÚ
-MODEL_PATHÚ	MODEL_URLÚMODEL_MIN_BYTESÚ LOG_DIRÚLOG_FILEÚCALIBRATION_FILEÚCAMERA_INDEXÚCAMERA_INDEX_CHOICESÚCAMERA_WIDTHÚ
-CAMERA_HEIGHTÚ
-CAMERA_FPSÚCAMERA_MAX_READ_FAILURESÚMIRROR_CAMERA_DEFAULTÚSWAP_LEFT_RIGHT_DEFAULTÚ	MAX_HANDSÚMIN_HAND_DETECTION_CONFIDENCEÚMIN_HAND_PRESENCE_CONFIDENCEÚMIN_TRACKING_CONFIDENCEÚ	BAUD_RATEÚSERIAL_WRITE_TIMEOUT_SÚCONTROL_RATE_HZÚESP32_TIMEOUT_MSÚ
-SERVO_NAMESÚlenÚ
-NUM_SERVOSÚ	enumerateÚSERVO_CHANNELSÚARMSÚJOINTSÚDEFAULT_LIMITSÚ
-HOME_ANGLEÚGRIPPER_OPEN_DEFAULTÚGRIPPER_CLOSED_DEFAULTÚSMOOTHING_ALPHAÚMAX_STEP_PER_UPDATEÚDEADBAND_DEGÚINPUT_SMOOTHINGÚACTIVE_X_RANGEÚACTIVE_Y_RANGEÚTILT_RANGE_DEGÚMAPPING_DEADZONEÚHAND_LOSS_HOLD_SÚGESTURE_FIST_MAX_OPENNESSÚGESTURE_OPEN_MIN_OPENNESSÚPINCH_CLOSE_RATIOÚPINCH_RELEASE_RATIOÚGESTURE_DEBOUNCE_FRAMESÚHOME_DONE_TOLERANCE_DEG)ÚindexÚnames   00Ú7C:\Users\sande\OneDrive\Desktop\hads\HANDSYNC\config.pyÚ<module>r]      s¯  ðñõ #å à
-€ØF€ñ ‹>×
-!Ñ
-!Ó
-#×
-*Ñ
-*€Ø
-˜Õ
- €
-Ø
-Ð0Õ
-0€
-ð5ð 
-ð €Ø
-VÕ
-€ Ø
-^Õ
-#€Ø˜hÕ&Ð);Õ;Ð ð €Ú&Ð Ø€Ø€
-Ø
-€
-ØÐ ØÐ ØÐ ð 
-€	Ø #Ð Ø"Ð ØÐ ð 
-€	ØÐ Ø€ØÐ ð€
-ñ Ó
-€
-Ù1:¸;Ô1GÔHÑ1G¡+ %$’+Ñ1GÒH€Ø €Ø	1€ð 
-ˆIØ	Ø
-ˆYØ
-ˆyð	€ð €
-ØÐ ØÐ ð €ØÐ Ø€Ø€ð €Ø€Ø€ØÐ ØÐ ð !Ð Ø Ð ØÐ ØÐ ØÐ ð Ò ùóI Is   Â"
-C'

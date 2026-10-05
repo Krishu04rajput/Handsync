@@ -1,740 +1,0 @@
-+
-    kb¿j^˜  ã                  ó”  € R t ^ RIHt ^ RIt^ RIHt ^ RIH t Ht ^ RI	H
-t
-H
-t
-Ht ^ RI
-HtHtHtHtHtHtHtHtHtHtHtHtHtHtHtHtHtHt ^ RI t ^ R I!H"t"H#t#H$t$ ^ RI%H&t&H't' ^ R	I(H)t) ^ R
-I*H+t+H,t,H-t- ^ R
-I.H/t/ ^ RI0H1t1 ^ R
-I2H3t3H4t4 ^ RI5H6t6 ]/! ]74      t8RRRut9t:t;Rt<R R lt=R R lt>RR R llt? ! R R]4      t@ ! R R]4      tAR# )zQHANDSYNC PySide6 dashboard (runs on the GUI thread; vision runs in CameraWorker).)Ú
-annotationsN)ÚOptional)ÚQtÚQTimer)ÚQKeySequenceÚ QPixmapÚ	QShortcut)ÚQButtonGroupÚ	QCheckBoxÚ	QComboBoxÚ QDialogÚQFrameÚ
-QGridLayoutÚ
-QHBoxLayoutÚQLabelÚ
-QMainWindowÚ
-QMessageBoxÚ
-QPushButtonÚ
-QScrollAreaÚ
-QSizePolicyÚ QSliderÚQSpinBoxÚ
-QVBoxLayoutÚ QWidgetÚQApplication)Ú
-CalibrationÚCalibrationErrorÚsave_calibration)ÚCameraWorkerÚ
-FrameResult)Ú
-DemoSequencer)ÚHandTrackerErrorÚdownload_modelÚmodel_status)Ú
-get_logger)Ú
-RobotMapper)ÚSerialControllerÚparse_status)Ú
-ServoSmootherÚDISABLEDÚ ENABLEDÚESTOPa
-  
-QMainWindow, QWidget#root { background:#0b0f17; }
-QWidget { color:#d6e2f0; font-family:'Segoe UI','Inter',sans-serif; font-size:12px; }
-QFrame#card { background:#121926; border:1px solid #1f2b3d; border-radius:10px; }
-QLabel#cardTitle { color:#4cc9f0; font-weight:700; letter-spacing:2px; font-size:11px; }
-QLabel#appTitle { font-size:28px; font-weight:800; color:#e8f4ff; letter-spacing:7px; }
-QLabel#appSubtitle { color:#4cc9f0; letter-spacing:3px; font-size:11px; }
-QLabel#video { background:#05080d; border:1px solid #1f2b3d; border-radius:10px; }
-QLabel#banner { font-size:16px; font-weight:800; letter-spacing:2px; padding:8px; border-radius:8px; }
-QLabel#banner[level="info"] { background:#0e3a4a; color:#aef0ff; border:1px solid #4cc9f0; }
-QLabel#banner[level="err"] { background:#5c0f1c; color:#ffd5dc; border:2px solid #ff4d6a; }
-QLabel#badge { padding:3px 10px; border-radius:10px; font-weight:700; border:1px solid #3a4a60;
-               background:#182233; color:#9fb3c8; }
-QLabel#badge[level="ok"]   { background:#0f3d2e; color:#46e8ab; border-color:#46e8ab; }
-QLabel#badge[level="warn"] { background:#443300; color:#ffd24a; border-color:#ffd24a; }
-QLabel#badge[level="err"]  { background:#4a0f1b; color:#ff7a90; border-color:#ff7a90; }
-QLabel#badge[level="info"] { background:#0e3a4a; color:#7fdcff; border-color:#4cc9f0; }
-QLabel#msg { color:#9fb3c8; }
-QPushButton { background:#182233; border:1px solid #2b3b52; border-radius:6px; padding:7px 10px; font-weight:600; }
-QPushButton:hover { border-color:#4cc9f0; }
-QPushButton:disabled { color:#5b6b7f; background:#10161f; border-color:#1b2535; }
-QPushButton:checked { background:#0e3a4a; border-color:#4cc9f0; color:#aef0ff; }
-QPushButton#primary { background:#0d6e86; border-color:#4cc9f0; color:white; }
-QPushButton#estop { background:#b3122a; border:2px solid #ff4d6a; color:white; font-size:15px;
-                    font-weight:800; padding:14px; letter-spacing:2px; }
-QPushButton#estop:hover { background:#d4163a; }
-QPushButton#resume { background:#b36b00; border:2px solid #ffd24a; color:white; font-weight:800; padding:10px; }
-QComboBox, QSpinBox { background:#0e1520; border:1px solid #2b3b52; border-radius:6px; padding:4px 8px; }
-QComboBox QAbstractItemView { background:#0e1520; selection-background-color:#0d6e86; }
-QSlider::groove:horizontal { height:6px; background:#1f2b3d; border-radius:3px; }
-QSlider::sub-page:horizontal { background:#4cc9f0; border-radius:3px; }
-QSlider::handle:horizontal { background:#e8f4ff; width:14px; margin:-5px 0; border-radius:7px; }
-QSlider::handle:horizontal:disabled { background:#4b5a6e; }
-QScrollArea { border:none; background:transparent; }
-QCheckBox { spacing:8px; }
-c               ó(   € V ^8„  d   QhRRRRRRRR /# )é   Úlabelr   ÚtextÚstrÚlevelÚreturnÚNone© )Úformats   "Ú7C:\Users\sande\OneDrive\Desktop\hads\HANDSYNC\app\ui.pyÚ__annotate__r7   C   s(   € ÷  ñ  Vð   3ð  ¨sð  °tñ  ó    c           
-     ó
-  € RRRRRRR RRR	/P                  VR
-4      pV P                  V R
-V 24       V P                  RV4       V P                   4       P	                  V 4       V P                   4       P
-                  V 4       R
-# )zMColoured status pill. The text always says the status too (not colour alone).Úoku   â—Úwarnu   â–²Úerru   â– ÚinfoÚoffu   â—‹Ú Ú r1   N)ÚgetÚ setTextÚ
-setPropertyÚstyleÚunpolishÚpolish)r.   r/   r1   Úicons   &&& r6   Ú	set_badgerH   C   s|   € à(˜F H¨e°X¸vÀxÐQVÐX`Ð
-a×
-eÑ
-eÐfkÐmoÓ
-p€DØ	‡MMTF˜!˜D˜6Ð"Ô#Ø	×Ñg˜uÔ%Ø	‡KKƒM×Ñ˜5Ô!Ø	‡KKƒM×Ñ˜Ör8   c               ó    € V ^8„  d   QhRRRR/# )r-   Útitler0   r2   ztuple[QFrame, QVBoxLayout]r4   )r5   s   "r6   r7   r7   L   s   € ÷ 	ñ 	Sð 	Ð7ñ 	r8   c                óø   € \        4       pVP                  R 4       \        V4      pVP                   ^^^^4       VP	                  ^4       \
-        V 4      pVP                  R4       VP
-                  V4       W3# )ÚcardÚ	cardTitle) r
-   Ú
-setObjectNamer   ÚsetContentsMarginsÚ
-setSpacingr   Ú	addWidget)rJ   ÚframeÚlayoutÚ headings   &   r6   Ú	make_cardrU   L   sp   € Ü‹H€EØ	×Ñ˜ÔÜ
-˜Ó
-€FØ
-×Ñ˜b " b¨"Ô-Ø
-×ÑaÔÜU‹m€GØ
-×Ñ˜+Ô&Ø
-×ÑWÔØ
-ˆ=Ðr8   c               ó$   € V ^8„  d   QhRRRRRR/# )r-   r/   r0   r1   r2   r   r4   )r5   s   "r6   r7   r7   X   s!   € ÷ ñ Sð  cð °fñ r8   c                óT   € \        4       pVP                  R 4       \        W V4       V# )Úbadge)r   rN   rH   )r/   r1   rX   s   && r6   Ú
-make_badgerY   X   s&   € Ü‹H€EØ	×Ñ˜ Ô Ü
-ˆe˜5Ô!Ø
-€Lr8   c                  óN   a € ] tR t^`tRtR	R V 3R llltR R ltR R  lt RtV ;t	# )
-ÚCalibrationDialogzHEdit min / center / max / invert / gripper open+closed for all 8 servos.c               ó   € V ^8„  d   QhRR/# )r-   Ú
-calibrationr   r4   )r5   s   "r6   r7   ÚCalibrationDialog.__annotate__c   s   € ÷ 4"ñ 4" Kñ 4"r8   c           	     	ó   <€ \         SV `  V4       V P                  R 4       V P                   \        4       RV n        Wn        \        V 4      p\        R4      pVP                  R4       VP                  V4       \        4       p\        R4       F4  w  rg\        V 4      pVP                  R4       VP                  V^ V4       K6  	  / V n
-        \        \        P                  ^R7       EFƒ  w  ršVP                   V
-,          p
-VP                  \        V
-P#                  RR 4      P%                  4       4      V	^ 4       / p\        R^R7       FQ  w  rm\'        4       pVP)                  ^ ^´4       VP+                  \-        W½4      4       VP                  WéV4       WìV
-&   KS  	  \/        4       pVP1                  V
-P2                  4       VP                  Wù^4       WüR&   V
-P5                  R	4      '       dm   \        R^R7       F[  w  rm\'        4       pVP)                  ^ ^´4       TP+                  \-        W½4      ;'       g    ^ 4       VP                  WéV4       WìV
-&   K]  	  WÀP                  V
-&   EK†  	  VP7                  V4       \9        4       p\;        R
-4      pVP                  R
-4       \;        R4      p\;        R
-4      pVP<                  P?                  V P@                  4       VP<                  P?                  V PB                  4       VP<                  P?                  V PD                  4       VP                  V4       VPG                  ^4       VP                  V4       VP                  V4       VP7                  V4       R# )zHANDSYNC - Servo calibrationNzšAngles are in degrees (0-180). The robot will NEVER move outside Min..Max.
-Open/Closed apply to grippers only. 'Invert' mirrors a joint around its Center.ÚmsgrM   )ÚstartÚ_r@   ÚinvertÚ gripperÚSAVEÚ primaryÚCANCELzRESET TO DEFAULTS) ÚServoÚMinÚCenterÚMaxÚInvertÚOpenÚClosed)ÚminÚcenterÚmax)ÚopenÚclosed)$ÚsuperÚ__init__ÚsetWindowTitleÚ
-setStyleSheetÚQSSÚresult_calibrationÚ	_originalr   r   rN   rQ   r   Ú	enumerateÚfieldsÚconfigÚ
-SERVO_NAMESÚservosÚ replaceÚupperr   ÚsetRangeÚsetValueÚ getattrr
-   Ú
-setCheckedrc   ÚendswithÚ	addLayoutr   r   Ú clickedÚ connectÚ_on_saveÚrejectÚ_on_defaultsÚ
-addStretch)Úselfr]   ÚparentrS   ÚnoteÚgridÚcolÚheadr.   ÚrowÚnameÚcalÚ widgetsÚkeyÚspinrc   Ú buttonsÚsaveÚcancelÚdefaultsÚ	__class__s   &&&                 €r6   ru   ÚCalibrationDialog.__init__c   sÜ  ø€ Ü
-‰ Ñ˜Ô Ø×ÑÐ:Ô;Ø×Ñœ3ÔØ9=ˆÔØ$ŒÜ˜TÓ"ˆÜð hó iˆà×Ñ˜5Ô!Ø×Ñ˜ÔÜ‹}ˆÜ"Ð#`Öa‰IˆCÜ˜4“LˆEØ×Ñ 
-Ô,ØN‰N˜5 ! SÖ)ñ  bð (*ˆŒ
-Ü"¤6×#5Ñ#5¸Q×?Ð?‰IˆCØ×$Ñ$ TÕ*ˆCØN‰Nœ6 $§,¡,¨s°CÓ"8×">Ñ">Ó"@ÓAÀ3ÈÔJØˆGÜ%Ð&>Àa×H‘Ü“zØ—
-‘
-˜a Ô%Ø—
-‘
-œg cÓ/Ô0Ø—‘˜t¨#Ô.Ø#˜“ñ
- Iô “[ˆFØ×Ñ˜cŸj™jÔ)ØN‰N˜6¨Ô*Ø &HÑØ}‰}˜Y×'Ò'Ü )Ð*<ÀA× F‘HCÜ#›:DØ—M‘M ! SÔ)Ø—M‘M¤'¨#Ó"3×"8Ð"8°qÔ9Ø—N‘N 4¨cÔ2Ø#'˜C“Lñ
- !Gð !(K‰K˜Ôñ+ @ð, 	×Ñ˜ÔÜ“-ˆ Ü˜6Ó"ˆØ×Ñ˜9Ô%Ü˜XÓ&ˆÜÐ2Ó3ˆØ‰×Ñ˜TŸ]™]Ô+Ø‰×Ñ˜tŸ{™{Ô+Ø×Ñ× Ñ  ×!2Ñ!2Ô3Ø×Ñ˜(Ô#Ø×Ñ˜1ÔØ×Ñ˜&Ô!Ø×Ñ˜$ÔØ×Ñ˜Ö!r8   c               ó   € V ^8„  d   QhRR/# ©r-   r2   r3   r4   )r5   s   "r6   r7   r^   ™   s   € ÷ 	0ñ 	0˜dñ 	0r8   c                 	ó~  € \         P                  ! 4       pV P                  P                   4        F‰  w  r#VP                  V,          pVP                   4        F]  w  rV\
-        WE4      p \
-        V\        4      '       d   VP                  \        V 4      4       KB  TP                  T ;'       g    ^ 4       K_  	  K‹  	  R# )é    N)
-r   Ú defaultr|   Úitemsr   r„   Ú
-isinstancer
-   r…   Úboolrƒ   )rŽ   r¤   r•   r—   r–   r˜   ÚwidgetÚvalues   &       r6   rŒ   ÚCalibrationDialog._on_defaults™   s„   € Ü×%Ò%Ó'ˆ Ø!Ÿ[™[×.Ñ.Ö0‰MˆDØ—.‘. Õ&ˆCØ&Ÿ}™}ž‘
-Ü Ó)Ü˜f¤i×0Ò0Ø×%Ñ%¤d¨5£kÖ2à—O‘O E§J J¨QÖ/ó
-  /ó 1r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   r^   ¤   s   € ÷ 
-ñ 
-˜$ñ 
-r8   c                	óØ  € V P                   P                  4       pV P                  P                   4        FK  w  r#R VR ,          P	                  4       /pR F#  pWS9   g   K
-  W5,          P
-                  4       WE&   K%  	  WAV&   KM  	   \        P                  ! V4      V n        T P                  4        R#   \         d-   p\        P                  ! T R\        T4      4        Rp?R# Rp?ii ; i)rc   zInvalid calibrationN)ro   rp   rq   rr   rs   )rz   Ú to_dictr|   r¥   Ú	isCheckedr©   r   Ú	from_dictry   r   r   Ú warningr0   Úaccept) rŽ   Údatar•   r—   Úentryr˜   Úexcs    &      r6   rŠ   ÚCalibrationDialog._on_save¤   s¿   € Ø—^‘^×+Ñ+Ó-ˆØ!Ÿ[™[×.Ñ.Ö0‰MˆDØ˜w xÕ0×:Ñ:Ó<Ð=ˆEÛAØ–>Ø!(¥×!3Ñ!3Ó!5E“Jñ Bð ‹Jñ
- 1ð	Ü&1×&;Ò&;¸DÓ&AˆDÔ#ð 	
-
-‰
-Ž
-øô   ô 	Ü×Ò Ð&;¼SÀ»XÔFÝûð	ús   ÂB2 Â2
-C)Â=!C$Ã$C))rz   r|   ry   ©N)
-Ú__name__Ú
-__module__Ú__qualname__Ú__firstlineno__Ú __doc__ru   rŒ   rŠ   Ú__static_attributes__Ú
-__classcell__©rž   s   @r6   r[   r[   `   s    ø† ÙR÷4"ò 4"õl	0÷
-ó 
-r8   r[   c                  ó  a € ] tR t^µtR V 3R lltR R ltR R ltR  R lt R	 R
- ltR
- R lt	R
- R lt
-R R lt
-RPR R lltR R lt
-R R ltR R ltR R ltR R ltR R ltR R  ltR! R" ltR# R$ ltR% R& ltR' R( ltR) R* ltR+ R, ltR- R. ltR/ R0 ltR1 R2 ltR3 R4 ltR5 R6 ltRQR7 R8 lltR9 R: lt R; R< lt!R= R> lt"R? R@ lt#RA RB lt$RC RD lt%RE RF lt&RG RH lt'RI RJ lt(RK RL lt)RM V 3RN llt*ROt+V ;t,# )RÚ
-MainWindowc               ó    € V ^8„  d   QhRRRR/# )r-   r]   r   Úcalibration_warningsz	list[str]r4   )r5   s   "r6   r7   ÚMainWindow.__annotate__¶   s   € ÷ #kñ #k Kð #kÀyñ #kr8   c                	óÀ  <€ \         SV `  4        V P                  R 4       V P                   RR4       V P	                  \
-        4       Wn        \        4       V n        \        V P                  4      V n
-        \        V P                  P                  4       \        P                  \        P                  \        P                   4      V n        \%        4       V n        RV n        \*        V n        RV n        RV n        V P                  P                  4       V n        RV n        RV n        R RR	R/V n        V P;                  4        V P=                  4        V P?                  4        V PA                  4        \C        \E        \F        PH                  4      W PJ                  R
-7       \M        V 4      V n'        V PN                  PP                  PS                  V PT                  4       V PN                  PW                  \Y        R
-\        PZ                  ,
-          4      4       V F-  pV P]                  VR4       \^        P`                  ! V R
-V4       K/  	  V P]                  RR4       R# )ÚHANDSYNCiP  i4  NÚMIRRORFg        ÚleftÚLOSTÚright)Ú	activatediè  r;   r   zNReady. Start the camera first. Robot is DISABLED until you press ENABLE ROBOT.r=   )1rt   ru   rv   Úresizerw   rx   r–   r&   Úserialr%   Úmapperr(   Úhome_outputsr}   ÚSMOOTHING_ALPHAÚMAX_STEP_PER_UPDATEÚDEADBAND_DEGÚsmootherr    ÚdemoÚworkerr)   ÚstateÚcontrol_modeÚhomingÚmanual_targetsÚ
-_enabled_atÚ_ignore_sliderÚ_last_tracking_statesÚ	_build_uiÚ
-refresh_portsÚ_apply_calibration_to_uiÚ_refresh_controlsr   r   r   Ú
-Key_EscapeÚemergency_stopr   ÚtimerÚ timeoutr‰   Ú_on_tickra   ÚintÚCONTROL_RATE_HZÚsayr   r°   )rŽ   r]   rÂ   r°   rž   s   &&& €r6   ru   ÚMainWindow.__init__¶   s´  ø€ Ü
-‰ ÑÔØ×Ñ˜JÔ'Ø
-‰
-D˜#ÔØ×Ñœ3ÔàŒÜ&Ó(ˆŒ
-Ü! $§(¡(Ó+ˆŒ
-Ü% d§h¡h×&;Ñ&;Ó&=¼v×?UÑ?UÜ&,×&@Ñ&@Ä&×BUÑBUóWˆŒ
-ä!“OˆŒ	Ø.2ˆŒ
-äˆŒ
-Ø$ˆÔØˆŒ
-Ø)-¯©×)>Ñ)>Ó)@ˆÔØˆÔØ#ˆÔØ&,¨f°g¸vÐ%FˆÔ"à‰ÔØ×ÑÔØ×%Ñ%Ô'Ø×ÑÔ Ü”,œrŸ}™}Ó-¨t×?RÑ?RÕSä˜D“\ˆŒ
-Ø
-‰
-×Ñ×"Ñ" 4§=¡=Ô1Ø
-‰
-×Ñœ˜T¤F×$:Ñ$:Õ:Ó;Ô<ã+ˆGØH‰HW˜fÔ%Ü×Ò  m°WÖ=ñ ,ð 	
-‰ÐaÐciÖjr8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   Ü   s   € ÷ 2 ñ 2 ˜4ñ 2 r8   c                	óü   € \        4       pVP                  R 4       V P                  V4       \         V4      pVP	                  ^^^^4       VP
-                  ^4       \
-        4       p\        \        P                  4      pVP                  R4       \        \        P                  4      pVP                  R4       VP                  V4       VP                  V4       \        R4      V n        V P                  P                  R4       V P                  P                  \        P                  4       V P                  P!                  4        VP                  V P                  4       \        R4      V n        V P"                  P                  R4       V P"                  P                  \        P                  4       V P"                  P%                  R R4       V P"                  P'                  \(        P*                  \(        P*                  4       VP                  V P"                  ^4       \        R	4      V n        V P,                  P                  R
-4       VP                  V P,                  4       VP/                  V^4       \        4       p\
-        V4      p V P	                  ^ ^ ^^ 4       V P
-                  ^
-4       V P0                  V P2                  V P4                  V P6                  V P8                  V P:                  3 F  pV P                  V! 4       4       K  	  \        R4      V n        V P<                  P                  R
-4       V P<                  P?                  R
-4       V P                  V P<                  4       V PA                  ^4       \C        4       p	V	PE                  R
-4       V	PG                  V4       V	PI                  R4       V	PK                  \        PL                  4       VP                  V	4       R
-# )ÚrootÚappTitleÚ
-appSubtitler?   ÚbannerúCAMERA OFF
-Press START CAMERAÚvideoi€  ià  úFPS --r`   Ti¸  N)'r   rN   ÚsetCentralWidgetr   rO   rP   r   r   r}   ÚAPP_NAMEÚAPP_SUBTITLErQ   rî   ÚsetAlignmentr   Ú
-AlignCenterÚhiderð   ÚsetMinimumSizeÚ
-setSizePolicyr   Ú IgnoredÚ	fps_labelr‡   Ú_card_connectionÚ_card_cameraÚ
-_card_controlÚ
-_card_handsÚ_card_servosÚ
-_card_hw_testÚ messageÚ
-setWordWrapr   r   ÚsetWidgetResizableÚ	setWidgetÚ
-setFixedWidthÚsetHorizontalScrollBarPolicyÚScrollBarAlwaysOff)
-rŽ   rë   ÚouterrÇ   rJ   ÚsubtitleÚpanelr’   Ú builderÚscrolls
-   &         r6   rÜ   ÚMainWindow._build_uiÜ   sÕ  € Ü‹yˆØ×Ñ˜6Ô"Ø×Ñ˜dÔ#Ü˜DÓ!ˆØ
-× Ñ   R¨¨RÔ0Ø
-×Ñ˜Ôô ‹}ˆÜ”v—‘Ó'ˆØ
-×Ñ˜JÔ'Üœ&×-Ñ-Ó.ˆØ×Ñ˜}Ô-Ø‰uÔØ‰xÔ Ü˜R“jˆŒ
-Ø
-‰
-×!Ñ! (Ô+Ø
-‰
-× Ñ ¤§¡Ô0Ø
-‰
-×ÑÔØ‰t—{‘{Ô#ÜÐ<Ó=ˆŒ
-Ø
-‰
-× Ñ  Ô)Ø
-‰
-×Ñ¤§¡Ô/Ø
-‰
-×!Ñ! # sÔ+Ø
-‰
-× Ñ ¤×!4Ñ!4´k×6IÑ6IÔJØ‰t—z‘z 1Ô%Ü Ó)ˆŒØ‰×$Ñ$ UÔ+Ø‰t—~‘~Ô&Ø
-‰˜˜aÔ ô “	ˆÜ˜%Ó ˆØ
-×Ñ˜q ! Q¨Ô*Ø
-‰rÔØ×-Ñ-¨t×/@Ñ/@À$×BTÑBTØ×(Ñ(¨$×*;Ñ*;¸T×=OÑ=OóQˆGàM‰M™'›)Ö$ñQô ˜b“zˆŒØ‰×"Ñ" 5Ô)Ø‰× Ñ  Ô&Ø
-
-‰
-d—l‘lÔ#Ø
-‰qÔÜ“ˆØ×!Ñ! $Ô'Ø×Ñ˜ÔØ×Ñ˜SÔ!Ø×+Ñ+¬B×,AÑ,AÔBØ
-‰˜Ör8   c               ó   € V ^8„  d   QhRR/# ©r-   r2   r
-   r4   )r5   s   "r6   r7   rÃ     s   € ÷ ñ  &ñ r8   c                	ó  € \        R 4      w  r\        4       pVP                  \         R4      4       \	        RR4      V n        VP                  V P
-                  4       VP
-                  ^4       VP                  V4       \        4       pVP                  \         R4      4       \        4       V n	        V P                  P                  ^Ü4       VP                  V P                  ^4       VP                  V4       \        4       p\        R4      V n        \        R4      V n
-        V P                  P                  R 4       \        R4      V n        V P                  P                   P#                  V P$                  4       V P                  P                   P#                  V P&                  4       V P                  P                   P#                  V P(                  4       V P                  V P                  V P                  3 F  pVP                  V4       K  	  VP                  V4       \         R	\*        P,                   R
-24      V n        V P.                  P                  R
-4       VP                  V P.                  4       V# )zESP32 CONNECTIONz
-ESP32 STATUS:ÚDISCONNECTEDr>   z	COM PORT:z
-REFRESH PORTSz
-CONNECT ESP32rf   Ú
-DISCONNECTú!ESP32 firmware state: --   (baud Ú)r`   )rU   r   rQ   r   rY   Úserial_badger   r‡   r
-   Ú
-port_comboÚsetMinimumWidthr   Ú
-refresh_btnÚ
-connect_btnrN   Údisconnect_btnrˆ   r‰   rÝ   Ú
-connect_esp32Údisconnect_esp32r}   Ú	BAUD_RATEÚesp_state_label)rŽ   rL   Úlayr”   Úbs   &    r6   rü   ÚMainWindow._card_connection  sÙ  € ÜÐ0Ó1‰	ˆÜ‹mˆØ
-
-‰
-”f˜_Ó-Ô.Ü& ~°uÓ=ˆÔØ
-
-‰
-d×'Ñ'Ô(Ø
-‰qÔØ
-
-‰
-cÔÜ‹mˆØ
-
-‰
-”f˜[Ó)Ô*Ü#›+ˆŒØ‰×'Ñ'¨Ô,Ø
-
-‰
-d—o‘o qÔ)Ø
-
-‰
-cÔÜ‹mˆÜ& Ó7ˆÔÜ& Ó7ˆÔØ×Ñ×&Ñ& yÔ1Ü)¨,Ó7ˆÔØ×Ñ× Ñ ×(Ñ(¨×);Ñ);Ô<Ø×Ñ× Ñ ×(Ñ(¨×);Ñ);Ô<Ø×Ñ×#Ñ#×+Ñ+¨D×,AÑ,AÔBØ×"Ñ" D×$4Ñ$4°d×6IÑ6IÓJˆAØM‰M˜!Öñ Kà
-
-‰
-cÔÜ%Ð(IÌ&×JZÑJZÐI[Ð[\Ð&]Ó^ˆÔØ×Ñ×*Ñ*¨5Ô1Ø
-
-‰
-d×*Ñ*Ô+Øˆ
-r8   c               ó   € V ^8„  d   QhRR/# r  r4   )r5   s   "r6   r7   rÃ   .  s   € ÷ !ñ !˜fñ !r8   c                	óÆ  € \        R 4      w  r\        4       pVP                  \         R4      4       \	        RR4      V n        VP                  V P
-                  4       VP
-                  ^4       VP                  \         R4      4       \        4       V n        \        P                   F(  pV P                  P                  \        V4      V4       K*  	  V P                  P                  \        ^ \        P                  P                  \        P                   4      4      4       VP                  V P                  4       VP#                  V4       \        4       p\%        R4      V n        V P&                  P)                  R4       \%        R 4      V n        V P&                  P,                  P/                  V P0                  4       V P*                  P,                  P/                  V P2                  4       VP                  V P&                  4       VP                  V P*                  4       VP#                  V4       \        4       p\5        R4      V n        V P6                  P9                  \        P:                  4       \5        R	4      V n        V P<                  P9                  V P>                  P@                  4       V P6                  PB                  P/                  V PD                  4       V P<                  PB                  P/                  V PF                  4       VP                  V P6                  4       VP                  V P<                  4       VP#                  V4       V# )
-ÚCAMERAz CAMERA:ÚOFFr>   zINDEX:zSTART CAMERArf   z
-STOP CAMERAz
-MIRROR CAMERAzSWAP LEFT / RIGHT)$rU   r   rQ   r   rY   Úcamera_badger   r
-   Úcamera_combor}   ÚCAMERA_INDEX_CHOICESÚ addItemr0   ÚsetCurrentIndexrq   ÚindexÚCAMERA_INDEXr‡   r   Ú
-start_cam_btnrN   Ústop_cam_btnrˆ   r‰   Ústart_cameraÚ
-stop_camerar
-   Úmirror_checkr…   ÚMIRROR_CAMERA_DEFAULTÚ
-swap_checkr–   Úswap_left_rightÚ toggledÚ_on_vision_flagsÚ_on_swap_toggled)rŽ   rL   r   r”   r,  s   &    r6   rý   ÚMainWindow._card_camera.  sV  € Ü˜hÓ'‰	ˆÜ‹mˆØ
-
-‰
-”f˜YÓ'Ô(Ü& u¨eÓ4ˆÔØ
-
-‰
-d×'Ñ'Ô(Ø
-‰qÔØ
-
-‰
-”f˜XÓ&Ô'Ü%›KˆÔÜ×0Ô0ˆEØ×Ñ×%Ñ%¤c¨%£j°%Ö8ñ 1à×Ñ×)Ñ)¬#¨a´×1LÑ1L×1RÑ1RÔSY×SfÑSfÓ1gÓ*hÔiØ
-
-‰
-d×'Ñ'Ô(Ø
-
-‰
-cÔÜ‹mˆÜ(¨Ó8ˆÔØ×Ñ×(Ñ(¨Ô3Ü'¨
-Ó6ˆÔØ×Ñ×"Ñ"×*Ñ*¨4×+<Ñ+<Ô=Ø×Ñ×!Ñ!×)Ñ)¨$×*:Ñ*:Ô;Ø
-
-‰
-d×(Ñ(Ô)Ø
-
-‰
-d×'Ñ'Ô(Ø
-
-‰
-cÔÜ‹mˆÜ% oÓ6ˆÔØ×Ñ×$Ñ$¤V×%AÑ%AÔBÜ#Ð$7Ó8ˆŒØ‰×"Ñ" 4§8¡8×#;Ñ#;Ô<Ø×Ñ×!Ñ!×)Ñ)¨$×*?Ñ*?Ô@Ø‰×Ñ×'Ñ'¨×(=Ñ(=Ô>Ø
-
-‰
-d×'Ñ'Ô(Ø
-
-‰
-d—o‘oÔ&Ø
-
-‰
-cÔØˆ
-r8   c               ó   € V ^8„  d   QhRR/# r  r4   )r5   s   "r6   r7   rÃ   Q  s   € ÷ :ñ :˜vñ :r8   c                	ó¢
-  a € \        R 4      w  r\        4       pVP                  \         R4      4       \	        RR4      S n        VP                  S P
-                  4       VP
-                  ^4       VP                  V4       \        R4      S n	        S P                  P                  R4       S P                  P                  P                  S P                  4       VP                  S P                  4       \        4       pVP                  \         R4      4       \        R 4      S n        \        R4      S n        S P                  S P                  3 F%  pVP!                  R	4       VP                  V4       K'  	  S P                  P#                  R	4       \%        S 4      pVP'                  R	4       VP)                  S P                  4       VP)                  S P                  4       S P                  P                  P                  V 3R
- l4       S P                  P                  P                  V 3R
- l4       VP                  V4       \        4       pVP                  \         R4      4       \+        \,        P.                  4      S n        S P0                  P3                  ^^<4       S P0                  P5                  \7        \8        P:                  ^d,          4      4       S P0                  P<                  P                  V 3R
- l4       VP                  S P0                  ^4       VP                  \         R4      4       VP                  V4       \        4       p\        R4      S n        \        R4      S n         \        R4      S n!        S P>                  P                  P                  S PD                  4       S P@                  P                  P                  S PF                  4       S PB                  P                  P                  S PH                  4       S P>                  S P@                  S PB                  3 F  pVP                  V4       K  	  VP                  V4       \        R4      S n%        S PJ                  P                  R4       S PJ                  P                  P                  S PL                  4       VP                  S PJ                  4       \        R4      S n'        S PN                  P                  R4       S PN                  P                  P                  S PP                  4       VP                  S PN                  4       V# )z
-ROBOT CONTROLzSTATE:ú
-VISION ONLYr=   úENABLE ROBOTrf   zMODE:rÆ   ÚMANUALTc                 ó&   <€ S P                  R 4      # )rÆ   ©Úset_mode©rŽ   s   €r6   Ú<lambda>Ú*MainWindow._card_control.<locals>.<lambda>j  ó   ø€ °T·]±]À8Ô5Lr8   c                 ó&   <€ S P                  R 4      # )r>  r@  rB  s   €r6   rC  rD  k  rE  r8   z	RESPONSE:c                ó@   <€ \        SP                  R V R,
-          4      # )Úalphag      Y@)Ú setattrrÒ   )ÚvrŽ   s   &€r6   rC  rD  s  s   ø€ ¼GÀDÇMÁMÐSZÐ\]Ð`eÕ\eÔ<fr8   u   smooth â†” fastz
-HOME ROBOTú
-START DEMOÚ
-CALIBRATIONzEMERGENCY STOP  (Esc)ÚestopzRESUME  (clear emergency stop)Úresume))rU   r   rQ   r   rY   Ú
-state_badger   r‡   r   Ú
-enable_btnrN   rˆ   r‰   Ú
-toggle_enableÚmode_mirror_btnÚmode_manual_btnÚsetCheckabler…   r	   ÚsetExclusiveÚ	addButtonr   r   Ú
-HorizontalÚresponse_sliderr‚   rƒ   rå   r}   rÏ   ÚvalueChangedÚhome_btnÚdemo_btnÚ	calib_btnÚ
-home_robotÚ
-toggle_demoÚopen_calibrationÚ	estop_btnrá   Ú
-resume_btnÚresume_from_estop)rŽ   rL   r   r”   r!  Úgroups   f     r6   rþ   ÚMainWindow._card_controlQ  s¬  ø€ Ü˜oÓ.‰	ˆÜ‹mˆØ
-
-‰
-”f˜XÓ&Ô'Ü% m°VÓ<ˆÔØ
-
-‰
-d×&Ñ&Ô'Ø
-‰qÔØ
-
-‰
-cÔÜ% nÓ5ˆŒØ‰×%Ñ% iÔ0Ø‰×Ñ×'Ñ'¨×(:Ñ(:Ô;Ø
-
-‰
-d—o‘oÔ&ä‹mˆØ
-
-‰
-”f˜W“oÔ&Ü*¨8Ó4ˆÔÜ*¨8Ó4ˆÔØ×&Ñ&¨×(<Ñ(<Ó=ˆAØ
-N‰N˜4Ô ØM‰M˜!Öñ >ð 	
-×Ñ×'Ñ'¨Ô-Ü˜TÓ"ˆØ
-×Ñ˜4Ô Ø
-‰˜×,Ñ,Ô-Ø
-‰˜×,Ñ,Ô-Ø×Ñ×$Ñ$×,Ñ,Ô-LÔMØ×Ñ×$Ñ$×,Ñ,Ô-LÔMØ
-
-‰
-cÔä‹mˆØ
-
-‰
-”f˜[Ó)Ô*Ü&¤r§}¡}Ó5ˆÔØ×Ñ×%Ñ% a¨Ô,Ø×Ñ×%Ñ%¤c¬&×*@Ñ*@À3Õ*FÓ&GÔHØ×Ñ×)Ñ)×1Ñ1Ô2fÔgØ
-
-‰
-d×*Ñ*¨AÔ.Ø
-
-‰
-”fÐ1Ó2Ô3Ø
-
-‰
-cÔä‹mˆÜ# LÓ1ˆŒ
-Ü# LÓ1ˆŒ
-Ü$ ]Ó3ˆŒØ
-‰
-×Ñ×%Ñ% d§o¡oÔ6Ø
-‰
-×Ñ×%Ñ% d×&6Ñ&6Ô7Ø‰×Ñ×&Ñ& t×'<Ñ'<Ô=Ø—-‘- §¡°·±Ó?ˆAØM‰M˜!Öñ @à
-
-‰
-cÔä$Ð%<Ó=ˆŒØ‰×$Ñ$ WÔ-Ø‰×Ñ×&Ñ& t×':Ñ':Ô;Ø
-
-‰
-d—n‘nÔ%Ü%Ð&FÓGˆŒØ‰×%Ñ% hÔ/Ø‰×Ñ×'Ñ'¨×(>Ñ(>Ô?Ø
-
-‰
-d—o‘oÔ&Øˆ
-r8   c               ó   € V ^8„  d   QhRR/# r  r4   )r5   s   "r6   r7   rÃ     s   € ÷ 
-ñ 
-˜Vñ 
-r8   c                 	ó`  € \        R 4      w  r/ V n        \        P                   F…  p\	        4       pVP
-                  \
-        VP                  4        R24      4       \        RR4      pWPP                  V&   VP                  ^4       VP
-                  V4       VP                  V4       K‡  	  V# )z
-HAND STATUSz HAND:úNOT DETECTEDr>   )
-rU   Ú
-hand_badgesr}   ÚARMSr   rQ   r   r   rY   r   r‡   )rŽ   rL   r   Úarmr”   rX   s   &     r6   rÿ   ÚMainWindow._card_hands  sŽ   € Ü˜mÓ,‰	ˆØ.0ˆÔÜ—;”;ˆCÜ“-ˆCØM‰Mœ& C§I¡I£K =°Ð!7Ó8Ô9Ü˜~¨uÓ5ˆEØ$)×Ñ˜SÑ!ØN‰N˜1ÔØM‰M˜%Ô ØM‰M˜#Öñ ð ˆ
-r8   c               ó   € V ^8„  d   QhRR/# r  r4   )r5   s   "r6   r7   rÃ   š  s   € ÷ ñ ˜fñ r8   c                	ó  a € \        R 4      w  r/ S n        / S n        \         4       p^ p\        P
-                   EF;  p\
-        VP                  4        R24      pVP                  R4       VP                  Wd^ ^^4       V^,
-          p\        P                   FÙ  p V RV  2pVP                  \
-        V P                  4        R24      V^ 4       \        \        P                  4      p	V	P                  P!                  V3V 3R ll4       \
-        R4      p
-V
-P#                  ^(4       VP                  W”^4       VP                  W¤^4       WšuS P                  V&   S P                  V&   V^,
-          pKÛ  	  EK>  	  VP%                  V4       V# ) z.SERVO MONITOR  (sliders active in MANUAL mode)z ARMrM   rb   Ú:c                ó&   <€ SP                  W4      # r¶   )Ú
-_on_slider)r©   ÚnrŽ   s   &&€r6   rC  Ú)MainWindow._card_servos.<locals>.<lambda>©  s   ø€ À$Ç/Á/ÐRSÔB[r8   u   90Â°)rU   Ú slidersÚvalue_labelsr   r}   ri  r   r   rN   rQ   ÚJOINTSÚ
-capitalizer   r   rW  rY  r‰   r  r‡   )
-rŽ   rL   r   r‘   r”   rj  r“   Újointr•   ÚsliderÚ
-value_labels
-   f          r6   r   ÚMainWindow._card_servosš  sP  ø€ ÜÐNÓO‰	ˆØ+-ˆŒØ/1ˆÔÜ‹}ˆØˆÜ—;•;ˆCÜ˜SŸY™Y›[˜M¨Ð.Ó/ˆDØ×Ñ˜{Ô+ØN‰N˜4 a¨¨AÔ.Ø1HˆCÜŸœØ˜˜a ˜wÐ'Ø—‘œv¨×)9Ñ)9Ó);Ð(<¸AÐ&>Ó?ÀÀaÔHÜ ¤§¡Ó/Ø×#Ñ#×+Ñ+¸DÖ,[Ô\Ü$ ZÓ0
-Ø×+Ñ+¨BÔ/Ø—‘˜v¨AÔ.Ø—‘˜{°Ô3Ø>DÐ;—‘˜TÑ" D×$5Ñ$5°dÑ$;Øq•’ô 'ñ
- ð  	
-‰
-dÔØˆ
-r8   c               ó   € V ^8„  d   QhRR/# r  r4   )r5   s   "r6   r7   rÃ   ³  s   € ÷ ñ ˜vñ r8   c                 	óÞ  a € \        R 4      w  r\        4       pVP                  \         R4      4       \	        4       S n        \        P                   FX  pS P
-                  P                  VP                  RR4      P                  4        R\        P                  V,           R2V4       KZ  	  VP                  S P
-                  ^4       VP                  V4       \        4       pR
- FD  w  rV\        V4      p V P                  P                  RV3V 3R  ll4       VP                  V 4       KF  	  VP                  V4       \         R4      pVP!                  R	4       VP                  V4       V# )
-z$HARDWARE TEST  (one servo at a time)zSERVO:rb   r@   z  (ch r  Fc                ó&   <€ SP                  V4      # r¶   )Ú
-hardware_test)rb   ÚdrŽ   s   &&€r6   rC  Ú*MainWindow._card_hw_test.<locals>.<lambda>¿  s   ø€ °t×7IÑ7IÈ!Ô7Lr8   zkMoves relative to CENTER, always limited to the calibrated Min..Max.
-Needs: ESP32 connected + ENABLE ROBOT.r`   ))u   -45Â°iÓÿÿÿ)ÚCENTERr£   )u   +45Â°é-   )rU   r   rQ   r   r
-   Ú
-test_combor}   r~   r*  r€   r   ÚSERVO_CHANNELSr‡   r   rˆ   r‰   rN   )	rŽ   rL   r   r”   r•   r/   Údeltar!  r   s	   f        r6   r  ÚMainWindow._card_hw_test³  s"  ø€ ÜÐDÓE‰	ˆÜ‹mˆØ
-
-‰
-”f˜XÓ&Ô'Ü#›+ˆŒÜ×&Ô&ˆDØO‰O×#Ñ# t§|¡|°C¸Ó'=×'CÑ'CÓ'EÐ&FÀfÌV×MbÑMbÐcgÕMhÐLiÐijÐ$kÐmqÖrñ 'à
-
-‰
-d—o‘o qÔ)Ø
-
-‰
-cÔÜ‹mˆÛQ‰KˆDÜ˜DÓ!ˆAØ
-I‰I×Ñ u°ÖLÔMØM‰M˜!Öñ  Rð 	
-‰
-cÔÜð ?ó @ˆà×Ñ˜5Ô!Ø
-
-‰
-dÔØˆ
-r8   c               ó$   € V ^8„  d   QhRRRRRR/# ©r-   r/   r0   r1   r2   r3   r4   )r5   s   "r6   r7   rÃ   É  s!   € ÷ 5ñ 5˜ð 5 Cð 5°Tñ 5r8   c                	óÚ   € R RRRRRRR /P                  VR4      pV P                  P                  RV R	24       V P                  P                   V4       \        P
-                  R
-W!4       R
-# )r=   z #9fb3c8r;   z #ffd24ar<   z #ff7a90r:   z #46e8abzcolor:Ú;zUI message [%s]: %sN)rA   r  rw   rB   Úlogr=   )rŽ   r/   r1   Úcolors   &&& r6   rç   ÚMainWindow.sayÉ  sc   € Ø˜ F¨I°u¸iÈÈyÐY×]Ñ]Ð^cÐenÓoˆØ‰×"Ñ" V¨E¨7°!Ð#4Ô5Ø‰×Ñ˜TÔ"Ü
-‰Ð&¨Ö4r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   Ï  s   € ÷ 8ñ 8¨$ñ 8r8   c           	     	ó  € R V n         V P                  P                  4        F˜  w  rV P                  P                  V,          pVP
-                  VP                  VP                  4       VP                  V P                  P                  WP                  \        P                  V,          ,          4      4       Kš  	  RV n         V P                  P                  V P                  4       V P                  P!                  R 4       V P                  P#                  V P                  P$                  4       V P                  P!                  R4       V P&                  '       d(   V P                  P$                  V P&                  n        R# R# ©TFN)rÚ   rs  r¥   r–   r   r‚   ro   rq   rƒ   ÚclamprØ   r}   r„  rÍ   Úset_calibrationr4  ÚblockSignalsr…   r5  rÔ   Úswap)rŽ   r•   rx  Úservos   &   r6   rÞ   Ú#MainWindow._apply_calibration_to_uiÏ  sÿ   € Ø"ˆÔØ ŸL™L×.Ñ.Ö0‰LˆDØ—H‘H—O‘O DÕ)ˆEØO‰O˜EŸI™I u§y¡yÔ1ØO‰O˜DŸH™HŸN™N¨4×1DÑ1DÄV×EZÑEZÐ[_ÕE`Õ1aÓbÖcñ  1ð $ˆÔØ
-‰
-×#Ñ# D§H¡HÔ-Ø‰×$Ñ$ TÔ*Ø‰×"Ñ" 4§8¡8×#;Ñ#;Ô<Ø‰×$Ñ$ UÔ+Ø
-;;ˆ;Ø#Ÿx™x×7Ñ7ˆDK‰KÖñ r8   c               ó   € V ^8„  d   QhRR/# )r-   r2   ztuple[str, str]r4   )r5   s   "r6   r7   rÃ   Ý  s   € ÷  (ñ  ( ñ  (r8   c                	óž   € V P                   \        8X  d   R# V P                   \        8X  d   R# V P                  P                  '       g   R# R# )úEMERGENCY STOP ACTIVE)r™  r<   )z
-ROBOT ENABLEDr:   )r<  r=   )zROBOT DISABLEDr;   )rÕ   r+   r*   rÌ   Úis_connectedrB  s   &r6   Ú_display_stateÚMainWindow._display_stateÝ  sB   € Ø
-:‰:œÔ
-Ø1Ð1Ø
-:‰:œÔ
- Ø(Ð(Ø{‰{×'×'Ð'Ø(Ð(Ø'Ð'r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   æ  s   € ÷ )ñ ) 4ñ )r8   c                	ó  € V P                  4       w  r\        V P                  W4       V P                  \        8H  pV P
-                  P
-                  V P                  \        8X  d   R MR4       V P
-                  P                  V'       * 4       V P                  P                  V4       V P                  P                  V'       * 4       V P                  R8H  pV P                  P                  4        F#  pTP                  T;'       d    V'       * 4       K%  	  V P                  P
-                  V P                   P"                  '       d   RMR4       V P$                  P&                  pV P(                  P                  V'       * 4       V P*                  P                  V4       V P,                  P                  V'       * 4       V P.                  P                  V P0                  RJ 4       V P2                  P                  V P0                  RJ4       V P4                  P                  V P0                  RJ 4       V'       d   V P7                  RR 4       R# V P                   P"                  '       g   V P7                  RR	4       R# R# )
-z
-DISABLE ROBOTr=  r>  z	STOP DEMOrK  Nz0EMERGENCY STOP ACTIVE - press RESUME to continuer<   r?   r=   )r›  rH   rO  rÕ   r+   rP  rB   r*   Ú
-setEnabledra  Ú
-setVisiblerZ  rÖ   rs  Úvaluesr[  rÓ   ÚactiverÌ   rš  r  r  r  r.  rÔ   r/  r(  Ú
-_set_banner) rŽ   r/   r1   rM  Úmanualrx  Ú	connecteds    &      r6   rß   ÚMainWindow._refresh_controlsæ  sÉ  € Ø×)Ñ)Ó+‰
-ˆÜ$×"Ñ" DÔ0Ø—
-‘
-œeÑ#ˆØ‰×Ñ°4·:±:ÄÔ3H¡ÈnÔ]Ø‰×"Ñ" u¤9Ô-Ø‰×"Ñ" 5Ô)Ø
-‰
-× Ñ  U¤Ô+Ø×"Ñ" hÑ.ˆØ—l‘l×)Ñ)Ö+ˆFØ×Ñ˜f×2Ð2¨U¬Ö3ñ ,à
-‰
-×Ñ¨T¯Y©Y×-=×-=Ð-=™kÀ<ÔPØ—K‘K×,Ñ,ˆ	Ø×Ñ×#Ñ#¨	¤MÔ2Ø×Ñ×&Ñ& yÔ1Ø‰×"Ñ" y¤=Ô1Ø×Ñ×%Ñ% d§k¡k°TÐ&9Ô:Ø×Ñ×$Ñ$ T§[¡[¸Ð%<Ô=Ø×Ñ×$Ñ$ T§[¡[°DÐ%8Ô9ß
-Ø×ÑÐOÐQVÖWØ—‘×!×!Ð!Ø×Ñ˜R Ö(ñ "r8   c               ó$   € V ^8„  d   QhRRRRRR/# rˆ  r4   )r5   s   "r6   r7   rÃ   þ  s!   € ÷  4ñ  4 ð  4¨Cð  4°Dñ  4r8   c                	ó  € V P                   P                  \        V4      4       V'       d;   V P                   P                   4       V8w  d   V P                   P	                  V4       V P                   P
-                  R 4      V8w  d…   V P                   P
-                  R V4       V P                   P                  4       P                  V P                   4       V P                   P                  4       P                  V P                   4       R# R# )r1   N)
-rî   r   r§   r/   rB   ÚpropertyrC   rD   rE   rF   )rŽ   r/   r1   s   &&&r6   r£  ÚMainWindow._set_bannerþ  s¯   € Ø
-‰
-×Ñœt D›zÔ*ß
-D—K‘K×$Ñ$Ó&¨$Ô.ØK‰K×Ñ Ô%Ø
-;‰;×
-Ñ
-  Ó
-(¨EÔ
-1ØK‰K×#Ñ# G¨UÔ3ØK‰K×ÑÓ×(Ñ(¨¯©Ô5ØK‰K×ÑÓ×&Ñ& t§{¡{Ö3ñ  2r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ     s   € ÷ 
-3ñ 
-3˜tñ 
-3r8   c                	ó¶  € V P                   P                  4       pV P                   P                  4        \        P                  ! 4       pV F&  w  r4V P                   P
-                  V R V 2V4       K(  	  V'       g   V P                   P
-                  RR4       V P                   P
-                  V4      pV^ 8¼  d   V P                   P                  V4       R# R# )z  -  z(no COM ports found)r?   N)r  Ú
-currentDataÚclearr&   Ú
-list_portsr*  ÚfindDatar+  )rŽ   ÚpreviousÚportsÚdeviceÚ
-descriptionr,  s   &     r6   rÝ   ÚMainWindow.refresh_ports  s¨   € Ø—?‘?×.Ñ.Ó0ˆØ‰×ÑÔÜ ×+Ò+Ó-ˆÛ#(ÑˆFØO‰O×#Ñ# v h¨e°K°=Ð$AÀ6ÖJñ $)çØO‰O×#Ñ#Ð$:¸BÔ?Ø—‘×(Ñ(¨Ó2ˆØ
-AŒ:ØO‰O×+Ñ+¨EÖ2ñ r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ     s   € ÷ !ñ !˜tñ !r8   c                	óˆ  € V P                   P                  4       pV P                  P                   V4      '       d3   \	        V P
-                  R V R2R4       V P
-                  RV R2R4       MD\	        V P
-                  RR4       V P
-                  R V P                  P                  ,           R4       V P                  4        R# )	z
-CONNECTED (r  r:   z
-Connected to z4. Robot stays DISABLED until you press ENABLE ROBOT.úCONNECTION ERRORr<   úESP32: CONNECTION ERROR - N)	r  r­  rÌ   r‰   rH   r  rç   Ú
-last_errorrß   )rŽ   Úports   & r6   r  ÚMainWindow.connect_esp32  sš   € Ø‰×*Ñ*Ó,ˆØ
-;‰;×
-Ñ
-˜t×
-$Ò
-$Üd×'Ñ'¨;°t°f¸AÐ)>ÀÔEØH‰H} T FÐ*^Ð_ÐaeÕfäd×'Ñ'Ð);¸UÔCØH‰HÐ1°D·K±K×4JÑ4JÕJÈEÔRØ×ÑÖ r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ     s   € ÷  !ñ  ! $ñ  !r8   c                	óX  € V P                   \        8X  d'   V P                  P                   R 4       \        V n         V P                  P
-                  4        \
-        V P                  RR4       V P                  P                  R\        P                   R24       V P                  4        R# )Ú DISABLEr  r>   r  r  N)
-rÕ   r*   rÌ   Úsend_commandr)   Ú
-disconnectrH   r  r  rB   r}   r  rß   rB  s   &r6   r  ÚMainWindow.disconnect_esp32  s{   € Ø
-:‰:œÔ
- ØK‰K×$Ñ$ YÔ/Ü!ˆDŒJØ
-‰
-×ÑÔ Ü$×#Ñ# ^°UÔ;Ø×Ñ×$Ñ$Ð'HÌ×IYÑIYÐHZÐZ[Ð%\Ô]Ø×ÑÖ r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   '  s   € ÷  !ñ  !˜Dñ  !r8   c                
-ó  € \        V P                  RR4       V P                  \        8X  d   \        V n        T P
-                  RV P                  P                  ;'       g    R,           R,           R4       V P                  4        R# ) z'Called when a serial read/write failed.r¸  r<   r¹  z	link lostzK. The ESP32 holds a safe position by itself. Re-connect, then ENABLE ROBOT.N)	rH   r  rÕ   r*   r)   rç   rÌ   rº  rß   rB  s   &r6   Ú
-_link_lostÚMainWindow._link_lost'  sg   € ä$×#Ñ#Ð%7¸Ô?Ø
-:‰:œÔ
- Ü!ˆDŒJØ‰Ð-°·±×1GÑ1G×1VÐ1VÈ;ÕWØ^õ_Ø`eô	gà×ÑÖ r8   c               ó    € V ^8„  d   QhRRRR/# )r-   ÚnowÚfloatr2   r3   r4   )r5   s   "r6   r7   rÃ   0  s   € ÷ ñ  Uð ¨tñ r8   c                	ó\  € V P                   P                  pV P                   P                  4        EF>  p\         V4      pV'       dù   V P                  P
-                  R VR,           R\        P                   R24       VR,          R8X  dA   V P                  \        8w  d,   WP                  ,
-          R8”  d   V P                  RR 7       Kœ  VR,          R8X  dc   V P                  \        8X  dK   WP                  ,
-          R8”  d1   \        V n        V P                  R	R
-4       V P                  4        EK  EK	  EK  EK  VP!                  R
-4      '       g   EK)  V P                  R
-V 2R
-4       EKA  	  V'       d1   V P                   P                  '       g   V P#                  4        R# R# R# )zESP32 firmware state: rÕ   z	   (baud r  r+   g      ø?T)Ú
-from_esp32r)   z=ESP32 restarted or disabled itself. Press ENABLE ROBOT again.r;   zESP32 says: N)ÚERRÚWARN)rÌ   rš  Úpollr'   r  rB   r}   r  rÕ   r+   rÙ   rá   r*   r)   rç   rß   Ú
-startswithrÅ  )rŽ   rÈ  Ú
-was_connectedÚlineÚstatuss   &&   r6   Ú_handle_serial_rxÚMainWindow._handle_serial_rx0  sH  € ØŸ
-™
-×0Ñ0ˆ
-Ø—K‘K×$Ñ$×&ˆDÜ! $Ó'ˆFßØ×$Ñ$×,Ñ,Ø,¨V°G­_Ð,=¸YÄv×GWÑGWÐFXÐXYÐZô\ð ˜7•O wÔ.°4·:±:ÄÔ3FØ×"2Ñ"2Õ2°SÔ8Ø×'Ñ'°4Ð'Ö8Ø˜W•o¨Ô3¸¿
-¹
-ÄgÔ8MØ× 0Ñ 0Õ0°3Ô6Ü!)D”JØ—H‘HÐ\Ð^dÔeØ×*Ñ*×,ò  7ò 9NÒ3ð
- —‘ ×1Õ1Ø—‘˜<¨ vÐ.°×7ñ '÷   §¡×!9×!9Ð!9ØO‰OÖñ ":‰=r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   F  s   € ÷ !!ñ !!˜dñ !!r8   c                	ó  € V P                   e   R # \        4       w  rV'       Eg#   \        V 4      pVP                   \        P                  4       VP
-                  R4       TP
-                  RV9   d   RMR4       VP                  V4       VP                  R\        P                  4      pVP                  R\        P                  4       VP                  4        VP                  4       VJd   R # \        P                  ! \        P                   4        \#        4        \        P&                  ! 4        T P-                  RR	4       V P.                  P1                  4       p\2        P5                  R
-V4       \7        W`P8                  P;                  4       V P<                  P;                  4       V 4      V n         V P                   P>                  PA                  V PB                  4       V P                   PD                  PA                  V PF                  4       V P                   PH                  PA                  V PJ                  4       V P                   PL                  PA                  V PN                  4       \Q        V PR                  R
-R4       V P                   PU                  4        V PW                  4        R #   \$         dB   p\        P&                  ! 4        \        P(                  ! T R \+        T4      4        R p?R # R p?ii ; i)
-NzHANDSYNC - model missingz	not foundz Hand Landmarker model not found.zHand Landmarker model invalid.zDownload nowÚCancelzDownload failedzModel downloaded.r:   zStarting camera %sz
-STARTING...r;   ),rÔ   r#   r   Ú setIconÚCriticalrv   rB   ÚsetInformativeTextrV  Ú
-AcceptRoleÚ
-RejectRoleÚexecÚ
-clickedButtonr   ÚsetOverrideCursorr   Ú
-WaitCursorr"   r!   ÚrestoreOverrideCursorÚcriticalr0   rç   r(  r­  r‹  r=   r   r2  r®   r4  Úresult_readyr‰   Ú
-_on_resultÚ
-camera_statusÚ_on_camera_statusÚ
-fatal_errorÚ_on_camera_errorÚfinishedÚ_on_worker_finishedrH   r'  ra   rß   ) rŽ   r:   r  ÚboxÚdownloadr´   r,  s    &      r6   r0  ÚMainWindow.start_cameraF  s  € Ø
-;‰;Ò
-"ÙÜ"“n‰
-ˆßˆrÜ˜dÓ#ˆCØK‰Kœ
-×,Ñ,Ô-Ø×ÑÐ9Ô:ØK‰K¸kÈWÔ>TÑ:ÐZzÔ{Ø×"Ñ" 7Ô+Ø—}‘} ^´[×5KÑ5KÓLˆHØM‰M˜(¤K×$:Ñ$:Ô;ØH‰HŒJØ× Ñ Ó"¨(Ó2ÙÜ×*Ò*¬2¯=©=Ô9ð
-ÜÔ ô
- 
-×.Ò.Ô0ØH‰HÐ(¨$Ô/Ø×!Ñ!×-Ñ-Ó/ˆÜ
-‰Ð% uÔ-Ü" 5×*;Ñ*;×*EÑ*EÓ*GÈÏÉ×IbÑIbÓIdÐfjÓkˆŒ
-Ø
-‰
-× Ñ ×(Ñ(¨¯©Ô9Ø
-‰
-×!Ñ!×)Ñ)¨$×*@Ñ*@ÔAØ
-‰
-×Ñ×'Ñ'¨×(=Ñ(=Ô>Ø
-‰
-×Ñ×$Ñ$ T×%=Ñ%=Ô>Ü$×#Ñ# ]°FÔ;Ø
-‰
-×ÑÔØ×ÑÖ øô $ô 
-Ü×2Ò2Ô4Ü×$Ò$ TÐ+<¼cÀ#»hÔGÝûð 
-ús   Ä
-J9 Ê9
-LË6L Ì Lc               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   i  s   € ÷ #ñ #˜Tñ #r8   c                	óŒ   € V P                   pVf   R # VP                  4        VP                  R4       V P                   4        R # )Ni   )rÔ   ÚstopÚwaitrê  )rŽ   rÔ   s   & r6   r1  ÚMainWindow.stop_camerai  s4   € Ø—‘ˆØ
-Š>ÙØ
-‰
-Œ
-Ø
-‰
-DÔØ× Ñ Ö"r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   q  s   € ÷ 
-!ñ 
-! Tñ 
-!r8   c                	ó
-  € V P                   e#   V P                   P                  4       '       d   R # R V n         V P                  P                   4        V P                  P	                  R4       V P
-                  P	                  R4       RV P                  P                  4       9  d   \        V P                  RR4       \        P                   F!  p\        V P                  V,          RR4       K#  	  V P                  4        R # ) Nrï   rñ   ÚERRORr&  r>   rg  )
-rÔ   Ú	isRunningrð   r®  rB   rû   r'  r/   rH   r}   ri  rh  rß   )rŽ   rj  s   & r6   rê  ÚMainWindow._on_worker_finishedq  s·   € Ø
-;‰;Ò
-" t§{¡{×'<Ñ'<×'>Ò'>ÙØˆŒ
-Ø
-‰
-×ÑÔØ
-‰
-×ÑÐ;Ô<Ø‰×Ñ˜xÔ(Ø
-˜$×+Ñ+×0Ñ0Ó2Ô
-2Üd×'Ñ'¨°Ô6Ü—;”;ˆCÜd×&Ñ& sÕ+¨^¸UÖCñ à×ÑÖ r8   c               ó$   € V ^8„  d   QhRRRRRR/# ) r-   r:   r§   r/   r0   r2   r3   r4   )r5   s   "r6   r7   rÃ   ~  s&   € ÷ Bñ B Dð B°ð B¸ñ Br8   c                	óR   € \        V P                  Y!'       d	   R 4       R# R4       R# )r:   r<   N)rH   r'  )rŽ   r:   r/   s   &&&r6   ræ  ÚMainWindow._on_camera_status~  s   € Ü$×#Ñ# T¶2¨4ÖA¸5ÖAr8   c               ó    € V ^8„  d   QhRRRR/# )r-   r  r0   r2   r3   r4   )r5   s   "r6   r7   rÃ     s   € ÷ ñ ¨ð °ñ r8   c                	óò   € \        V P                  R R4       V P                  RV,           R4       \        P                  ! V RV4       V P
-                  '       d   V P
-                  P
-                  4        R# R# )rõ  r<   zCAMERA ERROR: z"HANDSYNC - camera / tracking errorN) rH   r'  rç   r   râ  rÔ   rð  )rŽ   r  s   &&r6   rè  ÚMainWindow._on_camera_error  sY   € Ü$×#Ñ# W¨eÔ4Ø‰Ð! GÕ+¨UÔ3Ü×Ò˜TÐ#GÈÔQØ
-;;ˆ;ØK‰K×ÑÖñ r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   ˆ  s   € ÷ ?ñ ? $ñ ?r8   c                	ó€   € V P                   '       d,   V P                  P                  4       V P                   n        R # R # r¶   )rÔ   r2  r®   ÚmirrorrB  s   &r6   r7  ÚMainWindow._on_vision_flagsˆ  s+   € Ø
-;;ˆ;Ø!%×!2Ñ!2×!<Ñ!<Ó!>ˆDK‰KÖñ r8   c               ó    € V ^8„  d   QhRRRR/# )r-   Ú checkedr§   r2   r3   r4   )r5   s   "r6   r7   rÃ   Œ  s   € ÷  Cñ  C¨ð  C°ñ  Cr8   c                	óò   € WP                   n        V P                  '       d   WP                  n         \	        V P                   4       R#   \
-         d!   pT P
-                  R T 2R4        Rp?R# Rp?ii ; i)zCould not save calibration: r;   N) r–   r5  rÔ   r”  r   Ú OSErrorrç   )rŽ   r  r´   s   && r6   r8  ÚMainWindow._on_swap_toggledŒ  s\   € Ø#*‰Ô Ø
-;;ˆ;Ø&K‰KÔð	CÜ˜TŸX™XÖ&øÜô 	CØH‰HÐ3°C°5Ð9¸6×BÒBûð	Cús   ´A
- Á
-
-A6ÁA1Á1A6c               ó    € V ^8„  d   QhRRRR/# )r-   Úresultr   r2   r3   r4   )r5   s   "r6   r7   rÃ   •  s   € ÷ :ñ : ð :°ñ :r8   c                	ó2  € \         P                  ! VP                  4      P                   V P                  P
-                  4       \        P                  \        P                  4      pV P                  P                  V4       V P                  P                  R VP                  R
- RVP                   24       \        P                  ! 4       pV P                   P#                  VP$                  V4       \&        P(                   F‘  pVP$                  P+                  V4      pV P                   P-                  WC4      pV'       d&   Rp VP.                  R8w  d   RVP.                   2MRpMVR 8X  d   RR	r‡MR
-R
-r‡\1        V P2                  V,          W‡4       K“  	  R# )
-zFPS z4.1fz   |   hands: r:   Ú NEUTRALu   TRACKING Â· ÚTRACKINGÚ	UNCERTAINr;   zUNCERTAIN (holding pose)r>   rg  N)r    Ú	fromImageÚimageÚscaledrð   Úsizer   ÚKeepAspectRatioÚSmoothTransformationÚ	setPixmaprû   rB   ÚfpsÚhands_detectedÚtimeÚ	monotonicrÍ   ÚupdateÚobservationsr}   ri  rA   Útracking_stateÚ gesturerH   rh  )	rŽ   r  ÚpixmaprÈ  rj  ÚobsÚtrackingr1   r/   s	   &&       r6   rä  ÚMainWindow._on_result•  s0  € Ü×"Ò" 6§<¡<Ó0×7Ñ7¸¿
-¹
-¿¹Ó8IÌ2×K]ÑK]Ü9;×9PÑ9PóRˆà
-‰
-×Ñ˜VÔ$Ø‰×Ñ  f§j¡j°Ð%6°nÀV×EZÑEZÐD[Ð\Ô]ÜnŠnÓˆØ
-‰
-×Ñ˜6×.Ñ.°Ô4Ü—;”;ˆCØ×%Ñ%×)Ñ)¨#Ó.ˆCØ—{‘{×1Ñ1°#Ó;ˆHßØØ;>¿;¹;È)Ô;SÐ)¨#¯+©+¨Ñ7ÐYc‘Ø˜[Ô(Ø$Ð&@‘tà# ^tÜd×&Ñ& sÕ+¨TÖ9ó r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   ©  s   € ÷ !ñ !˜tñ !r8   c                	ó  € V P                   \        8X  d   R # V P                   \        8X  d;   V P                  P	                  R4       \
-        V n         V P
-                  RR4       EM
-V P                  P                  '       g   \        P                  ! V RR4       R # V P                  P                  V P                  P                  4       4       V P                  P                  4       V n        V P                  V P                  4       V P                  P	                  R4      '       g   V P!                  4        R # \        V n         \"        P$                  ! 4       V n        V P
-                  R R4       V P)                  4        R # )	Nr¿  z0Robot DISABLED. Servos hold their last position.r;   zESP32 not connectedz6Connect the ESP32 first (or keep testing vision only).ÚENABLEz,Robot ENABLED. Keep hands clear of the arms.r:   )rÕ   r+   r*   rÌ   rÀ  r)   rç   rš  r   Ú
-informationrÒ   Úresetr–   rÎ   rØ   Ú_sync_sliders_torÅ  r  r  rÙ   rß   rB  s   &r6   rQ  ÚMainWindow.toggle_enable©  s
-  € Ø
-:‰:œÔ
-ÙØ
-:‰:œÔ
- ØK‰K×$Ñ$ YÔ/Ü!ˆDŒJØH‰HÐGÈÖPà—;‘;×+×+Ð+Ü×'Ò'¨Ð.CØ(`ôbáàM‰M×Ñ §¡× 5Ñ 5Ó 7Ô8Ø"&§(¡(×"7Ñ"7Ó"9ˆDÔØ×!Ñ! $×"5Ñ"5Ô6Ø—K‘K×,Ñ,¨X×6Ò6Ø—‘Ô!ÙÜ ˆDŒJÜ#Ÿ~š~Ó/ˆDÔØH‰HÐCÀTÔJØ×ÑÖ r8   c               ó    € V ^8„  d   QhRRRR/# )r-   rË  r§   r2   r3   r4   )r5   s   "r6   r7   rÃ   Á  s   € ÷ !ñ !¨ð !¸$ñ !r8   c                	ó(  € \         P                  R V4       \        V n        RV n        V P
-                  P
-                  4        \        ^4       F  pV P                  P                  R4       K   	  V P                  RR4       V P                  4        R# )zEMERGENCY STOP (from_esp32=%s)FÚSTOPz:EMERGENCY STOP ACTIVE. Fix the problem, then press RESUME.r<   N)r‹  r°   r+   rÕ   r×   rÓ   rð  ÚrangerÌ   rÀ  rç   rß   )rŽ   rË  rb   s   && r6   rá   ÚMainWindow.emergency_stopÁ  sh   € Ü
-
-‰
-Ð4°jÔAÜˆŒ
-ØˆŒ
-Ø	‰	‰ÔÜq–ˆAØK‰K×$Ñ$ VÖ,ñ à‰ÐMÈuÔUØ×ÑÖ r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   Ë  s   € ÷ !ñ ! 4ñ !r8   c                	óÚ  € V P                   \        8w  d   R # V P                  P                  '       g   \        V n         V P
-                  RR4       MtV P                  P
-                  R4      '       d9   \        V n         \        P                  ! 4       V n
-        V P
-                  RR4       MV P                  4        \        V n         \        P                  R4       V P                  4        R # ) Nz7Emergency stop cleared, but the ESP32 is not connected.r;   ÚRESUMEzResumed. Robot ENABLED.r:   zEmergency stop cleared by user)rÕ   r+   rÌ   rš  r)   rç   rÀ  r*   r  r  rÙ   rÅ  r‹  r=   rß   rB  s   &r6   rb  ÚMainWindow.resume_from_estopË  sœ   € Ø
-:‰:œÔ
-ÙØ{‰{×'×'Ð'Ü!ˆDŒJØH‰HÐNÐPVÕWØ
-[‰[×
-%Ñ
-% h×
-/Ò
-/Ü ˆDŒJÜ#Ÿ~š~Ó/ˆDÔØH‰HÐ.°Õ5àO‰OÔÜ!ˆDŒJÜ
-‰Ð1Ô2Ø×ÑÖ r8   c               ó    € V ^8„  d   QhRRRR/# )r-   Úmoder0   r2   r3   r4   )r5   s   "r6   r7   rÃ   Û  s   € ÷ !ñ !˜Sð ! Tñ !r8   c                	ó$  € Wn         VR 8X  dY   V P                  P                   Uu. uF  p\         \	        V4      4      NK  	  upV n        V P
-                  V P
-                  4       V P                  RV 2R4       V P                  4        R# u upi )r>  zMode: r=   N)	rÖ   rÒ   r¡  rå   ÚroundrØ   r%  rç   rß   )rŽ   r1  rJ  s   && r6   rA  ÚMainWindow.set_modeÛ  su   € Ø ÔØ
-8Ô
-Ø:>¿-¹-×:NÒ:NÓ"OÑ:N°Q¤3¤u¨Q£x¦=Ñ:NÑ"OˆDÔØ×!Ñ! $×"5Ñ"5Ô6Ø‰6˜$˜ &Ô)Ø×ÑÖ ùò  #Ps   ¦B
-c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   ã  s   € ÷ !ñ !˜Dñ !r8   c                	ó  € V P                   \        8X  d   R # V P                  P                   4        RV n        V P                   \
-        8X  d   V P                  P                  R4       V P                  RR4       V P                  4        R # )NTÚHOMEzMoving to HOME position...r=   )
-rÕ   r+   rÓ   rð  r×   r*   rÌ   rÀ  rç   rß   rB  s   &r6   r]  ÚMainWindow.home_robotã  s_   € Ø
-:‰:œÔ
-ÙØ	‰	‰ÔØˆŒ
-Ø
-:‰:œÔ
- ØK‰K×$Ñ$ VÔ,Ø‰Ð-¨vÔ6Ø×ÑÖ r8   c               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   í  s   € ÷ !ñ !˜Tñ !r8   c                	ó(  € V P                   P                  '       dH   V P                   P                  4        V P                  P	                  4        V P
-                  R R4       MžV P                  \        8X  d   R# V P                  f   V P                  4        RV n
-        V P                  P                  R4       RV n
-        V P                   P                  \        P                   ! 4       4       V P
-                  RR4       V P#                  4        R# ) z
-Demo stopped.r=   NrÆ   TFz,Demo running. (Robot only moves if ENABLED.))rÓ   r¢  rð  rÍ   r$  rç   rÕ   r+   rÔ   r0  rÖ   rR  r…   r×   ra   r  r  rß   rB  s   &r6   r^  ÚMainWindow.toggle_demoí  s¸   € Ø
-9‰9×
-×
-Ð
-ØI‰IN‰NÔØK‰K×ÑÔØH‰H_ fÕ-àz‰zœUÔ"ÙØ{‰{Ò"Ø×!Ñ!Ô#Ø (ˆDÔØ× Ñ ×+Ñ+¨DÔ1ØˆDŒKØI‰IO‰OœDŸNšNÓ,Ô-ØH‰HÐCÀVÔLØ×ÑÖ r8   c               ó    € V ^8„  d   QhRRRR/# )r-   r…  rå   r2   r3   r4   )r5   s   "r6   r7   rÃ   þ  s   € ÷ !ñ ! 3ð !¨4ñ !r8   c                	ó&  € V P                   \        8X  d   R # V P                  P                   4       pV P                  P
-                  V,          pV P                  P
-                  W#P                  V,           4      pRV n        V P                  P                  R4       V P                  '       d   RV n
-        V P                  P                   Uu. uF  p\        \        V4      4      NK  	  upV n        W@P                   \"        P$                  V,          &   V P'                  V P                   4       V P                   \(        8X  d   RMRpT P+                  RV R V RV 2V P                   \(        8X  d   R	MR
-4       V P-                  4        R # u upi )
-Nr>  TFr?   z(  (robot not enabled: nothing will move)zTEST z	: target ô   Â°r=   r;   )rÕ   r+   rƒ  r­  r–   r   r‘  rp   rÖ   rS  r…   r×   rÒ   r¡  rå   r3  rØ   r}   r„  r%  r*   rç   rß   ) rŽ   r…  r•   r•  ÚtargetrJ  Úsuffixs    &&     r6   r~  ÚMainWindow.hardware_testþ  s)  € Ø
-:‰:œÔ
-ÙØ‰×*Ñ*Ó,ˆØ—‘—‘ Õ%ˆØ—‘—‘ §l¡l°UÕ&:Ó;ˆØ$ˆÔØ×Ñ×'Ñ'¨Ô-Ø
-;;ˆ;ØˆDŒKØ6:·m±m×6JÒ6JÓKÑ6J°œs¤5¨£8ž}Ñ6JÑKˆÔØ;A×ÑœF×1Ñ1°$Õ7Ñ8Ø×Ñ˜d×1Ñ1Ô2Ø—z‘z¤WÔ,‘Ð2\ˆØ‰5˜˜˜i¨ x¨v°f°XÐ>È$Ï*É*ÔX_ÔJ_ÁÐekÔlØ×ÑÖ ùò
- Ls   ÃFc               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ     s   € ÷ ,ñ , $ñ ,r8   c                	óx  € \        V P                  V 4      pVP                  4       \        P                  8X  dÎ   VP
-                  e¾   VP
-                  pV P                  P                  Vn        W n         \        V P                  4       V P                  RR4       \        \        P                  V P                  4       UUu. uF   w  rEV P                  P                  WE4      NK"  	  uppV n
-        V P                  4        R # R # R #   \         d    pT P                  RT 2R4        R p?L‘R p?ii ; iu uppi )NzCalibration saved.r:   z,Calibration applied but could not be saved: r;   )r[   r–   rÝ  r   ÚAcceptedry   r5  r   rç   r  Úzipr}   r~   rØ   r‘  rÞ   )rŽ   ÚdialogÚ new_calr´   rq  rJ  s   &     r6   r_  ÚMainWindow.open_calibration  sø   € Ü" 4§8¡8¨TÓ2ˆØ
-;‰;‹=œG×,Ñ,Ô
-,°×1JÑ1JÒ1VØ×/Ñ/ˆGØ&*§h¡h×&>Ñ&>ˆGÔ#ØŒHð
-WÜ  §¡Ô*Ø—‘Ð-¨tÔ4ô EHÌ×HZÑHZÐ\`×\oÑ\oÔDpÔ"qÑDp¹D¸A 4§8¡8§>¡>°!Ö#7ÑDpÒ"qˆDÔØ×)Ñ)Ö+ñ 2WÑ
-,øô ô 
-WØ—‘ÐGÈÀuÐMÈv×VÑVûð
-Wüã"qs   Á6'D	 Ã&D6Ä	
-D3ÄD.Ä.D3c               ó    € V ^8„  d   QhRRRR/# )r-   r¡  Úlistr2   r3   r4   )r5   s   "r6   r7   rÃ     s   € ÷ $ñ $ tð $°ñ $r8   c           	     	óô   € R V n         V P                  P                  4        FK  w  r#VP                   V P                  P
-                  W!\        P                  V,          ,          4      4       KM  	  RV n         R# r  )rÚ   rs  r¥   rƒ   r–   r‘  r}   r„  )rŽ   r¡  r•   rx  s   &&  r6   r%  ÚMainWindow._sync_sliders_to  sT   € Ø"ˆÔØ ŸL™L×.Ñ.Ö0‰LˆDØO‰O˜DŸH™HŸN™N¨4¼×8MÑ8MÈdÕ8SÕ1TÓUÖVñ 1à#ˆÖr8   c               ó$   € V ^8„  d   QhRRRRRR/# ) r-   r•   r0   r©   rå   r2   r3   r4   )r5   s   "r6   r7   rÃ   $  s&   € ÷ Wñ W˜sð W¨3ð W°4ñ Wr8   c                	óÊ   € V P                   '       g   V P                  R 8w  d   R# V P                  P                   W4      V P                  \
-        P                  V,          &   R# )r>  N) rÚ   rÖ   r–   r‘  rØ   r}   r„  )rŽ   r•   r©   s   &&&r6   rp  ÚMainWindow._on_slider$  sF   € Ø
-×
-×
-Ð
- $×"3Ñ"3°xÔ"?ÙØ;?¿8¹8¿>¹>È$Ó;Vˆ×ÑœF×1Ñ1°$Õ7Ó8r8   c               ó    € V ^8„  d   QhRRRR/# )r-   rÈ  rÉ  r2   z	list[int]r4   )r5   s   "r6   r7   rÃ   *  s   € ÷ %ñ % Eð %¨iñ %r8   c                	ó0  € V P                   P                  4       pV P                  '       d•   V P                  P	                  V4      \
-        P                  8  de   R V n        V P                  P                  4        \        V4      V n
-        V P                  V4       V P                  RR4       V P                  4        V# V P                  P                  '       Ed9   V P                  P!                  V4      pVP"                  R8X  dW   V P                  P                  4        V P                  RR4       V P                  4        V P                  P%                  4       # V P'                  VP(                  R4       VP"                  R8X  d   V# V P                  P%                  4       pVP"                  R
-9   d[   \
-        P*                   FF  pV P                   P-                  WSP"                  R 8H  4      V\
-        P.                  V R2,          &   KH  	  V# V P0                  R	8X  dR   \3        \
-        P4                  V P                  4       UU u. uF   w  rgV P                   P7                  Wg4      NK"  	  up p# V P                  P%                  4       # u up pi )
-FzHOME reached. Tracking resumes.r:   ÚdonezDemo finished.r=   ÚhomeÚgripper_openÚ_gripperr>  )rT  Ú
-gripper_close)r–   rÎ   r×   rÒ   Ú	max_errorr}   ÚHOME_DONE_TOLERANCE_DEGrÍ   r$  rJ  rØ   r%  rç   rß   rÓ   r¢  r  r1  Ú targetsr£  Ú captionri  Ú
-gripper_angler„  rÖ   rE  r~   r‘  )rŽ   rÈ  rS  ÚcmdrY  rj  rq  rJ  s   &&      r6   Ú_compute_targetsÚMainWindow._compute_targets*  sê  € Øx‰x×$Ñ$Ó&ˆØ
-;;ˆ;Ø}‰}×&Ñ& tÓ,¬v×/MÑ/MÔMØ#”
-Ø—
-‘
-×!Ñ!Ô#Ü&*¨4£jÔ#Ø×%Ñ% dÔ+Ø—‘Ð:¸DÔAØ×&Ñ&Ô(ØˆKØ
-9‰9×
-×
-Ñ
-Ø—)‘)×"Ñ" 3Ó'ˆCØx‰x˜6Ô!Ø—
-‘
-×!Ñ!Ô#Ø—‘Ð)¨4Ô0Ø×&Ñ&Ô(Ø—{‘{×*Ñ*Ó,Ð,Ø×Ñ˜SŸ[™[¨&Ô1Øx‰x˜6Ô!Ø
-Ø—k‘k×)Ñ)Ó+ˆGØx‰xÐ<Ô<Ü!Ÿ;œ;CØGKÇxÁx×G]ÑG]ØŸX™X¨Ñ7óH9GœF×1Ñ1°S°E¸Ð2BÕCÓDñ 'ð ˆNØ
-×
-Ñ
- Ô
-(Ü58¼×9KÑ9KÈT×M`ÑM`Ô5aÔbÑ5a©T¨QD—H‘H—N‘N 1Ö(Ñ5aÒbÐbØ{‰{×"Ñ"Ó$Ð$ùó cs   É&Jc               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   I  s   € ÷ ñ ˜$ñ r8   c                	ó°  € \         P                  ! 4       pV P                  V4       V P                   V4      pV P                  \
-        8X  d!   \
-        V P                  P                  4      pMV P                  P                  V4      p\        \        P                  V4       UUu. uF   w  rEV P                  P                  WE4      NK"  	  ppp\        \        P                  V4       F*  w  rGV P                  V,          P!                  V  R 24       K,  	  V P"                  R8w  g   V P                  \
-        8X  d   V P%                  V4       V P&                  P(                  '       g   R# V P                  \*        8X  d   V P&                  P-                  V4      MV P&                  P/                  R4      pV'       g   V P1                  4        R# R# u uppi )r>  r>  NÚPING)r  r  rÓ  r]  rÕ   r+   rJ  rÒ   r¡  ÚsteprE  r}   r~   r–   r‘  rt  rB   rÖ   r%  rÌ   rš  r*   Ú
-send_anglesrÀ  rÅ  )	rŽ   rÈ  rY  r¡  r•   rJ  Ú outputsr©   r:   s	   &        r6   rä   ÚMainWindow._on_tickI  sO  € ÜnŠnÓˆØ×Ñ˜sÔ#Ø×'Ñ'¨Ó,ˆ Ø
-:‰:œÔ
-Ü˜$Ÿ-™-×.Ñ.Ó/‰Fà—]‘]×'Ñ'¨ Ó0ˆFÜ:=¼f×>PÑ>PÐRXÔ:YÔZÑ:Y©w¨t4—8‘8—>‘> $Ö*Ñ:Yˆ ÑZäœv×1Ñ1°7Ö;‰KˆDØ×Ñ˜dÕ#×+Ñ+¨u¨g°VÐ,<Ö=ñ <à
-×
-Ñ
- Ô
-(¨D¯J©J¼%Ô,?Ø×!Ñ! 'Ô*à{‰{×'×'Ð'ÙØ15·±¼wÔ1FˆT[‰[×
-$Ñ
-$ WÔ
--ÈDÏKÉK×LdÑLdÐekÓLlˆßØO‰OÖñ ùó [s   Â%&Gc               ó   € V ^8„  d   QhRR/# r¡   r4   )r5   s   "r6   r7   rÃ   _  s   € ÷ "ñ " 4ñ "r8   c                	óz  <€ V P                   P                  4        V P                  P                  4        V P                  P                  '       d   V P                  P
-                  R 4       V P
-                  4        V P                  P                  4        \        P                  R4       \        SV `-  V4       R# )r¿  zHANDSYNC closedN)râ   rð  rÓ   rÌ   rš  rÀ  r1  rÁ  r‹  r=   rt   Ú
-closeEvent)rŽ   Úeventrž   s   &&€r6   rh  ÚMainWindow.closeEvent_  sw   ø€ Ø
-‰
-‰ÔØ	‰	‰ÔØ
-;‰;×
-#×
-#Ð
-#ØK‰K×$Ñ$ YÔ/Ø×ÑÔØ
-‰
-×ÑÔ Ü
-‰Ð"Ô#Ü
-‰ Ñ˜5Ö!r8   ),rÙ   rÚ   rÛ   rî   r–   r\  r'  r(  r  rÖ   rÓ   r[  r  rP  r  r`  rû   rh  rZ  r×   rØ   rÍ   r  r2  rS  rR  r  r  rX  ra  rÌ   r  rs  rÒ   r.  rÕ   rO  r/  r4  rƒ  râ   rt  rð   rÔ   )r=   )F)-r·   r¸   r¹   rº   ru   rÜ   rü   rý   rþ   rÿ   r   r  rç   rÞ   r›  rß   r£  rÝ   r  r  rÅ  rÓ  r0  r1  rê  ræ  rè  r7  r8  rä  rQ  rá   rb  rA  r]  r^  r~  r_  r%  rp  r]  rä   rh  r¼   r½   r¾   s   @r6   rÀ   rÀ   µ   sÚ   ø† ÷#kð #kõL2 õhõ<!õF:õx
-õõ2÷,5õ8õ (õ)õ0 4õ
-3õ!õ !õ !õõ,!!õF#õ
-!õBõõ?õ Cõ:õ(!÷0!õ!õ !õ!õ!õ"!õ",õ$õWõ%õ>÷,"ö "r8   rÀ   )r?   r>   )Br»   Ú
-__future__r   r  Útypingr   ÚPySide6.QtCorer   r   Ú
-PySide6.QtGuir   r    r   ÚPySide6.QtWidgetsr	   r
-   r
-   r   r
-   r   r   r   r   r   r   r   r   r   r   r   r   r   r}   Úapp.calibrationr   r   r   Ú
-app.camerar   r   Úapp.demor    Úapp.hand_trackerr!   r"   r#   Ú
-app.loggerr$   Ú
-app.mappingr%   Úapp.serial_controllerr&   r'   Ú
-app.smoothingr(   r·   r‹  r)   r*   r+   rx   rH   rU   rY   r[   rÀ   r4   r8   r6   Ú<module>rx     s¦   ðÙ WÝ "ã 
-Ý ç %ß :Ñ :÷-÷ -÷ -÷ -÷ -ó
- ß KÑ Kß 0Ý "ß KÑ KÝ !Ý #ß @Ý 'áÓ€ð & y°'Ð €ˆ'5ð# €õL õ	÷ôQ˜ ô Qôjr
-"ö r
-"r8   
